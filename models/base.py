@@ -2,13 +2,17 @@
 """ This module contains the base model people classes """
 from datetime import datetime
 from sqlalchemy import Column, String, DateTime
+from sqlalchemy.orm import declarative_base
 from uuid import uuid4
+
+
+Base = declarative_base()
 
 
 class BaseModel:
     """ The base class for creating other classes """
 
-    id = Column(String(30),
+    id = Column(String(50),
                 primary_key=True,
                 nullable=False,
                 unique=True)
@@ -38,6 +42,9 @@ class BaseModel:
 
         if "password" in self_dict:
             del self_dict["password"]
+        if "_sa_instance_state" in self_dict:
+            del self_dict["_sa_instance_state"]
+
         self_dict["__class__"] = self.__class__.__name__
 
         return self_dict

@@ -8,10 +8,10 @@ from sqlalchemy import Column, String
 class Person:
     """ The person class for creating staffs and student classes """
 
-    first_name = Column(String(30), nullable=False)
-    last_name = Column(String(30), nullable=False)
-    email = Column(String(30), nullable=False)
-    password = Column(String(35), nullable=False)
+    first_name = Column(String(45), nullable=False)
+    last_name = Column(String(45), nullable=False)
+    email = Column(String(45), nullable=False, unique=True)
+    password = Column(String(50), nullable=False)
 
     def __setattr__(self, name, value):
         """ hashes the password to an md5 when set """
