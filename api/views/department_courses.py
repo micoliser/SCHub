@@ -55,6 +55,9 @@ def course(department_id, course_id):
     if not department or not course:
         abort(404)
 
+    if course not in department.courses:
+        abort(404)
+
     if request.method == 'GET':
         return jsonify(course.to_dict())
     elif request.method == 'PUT':
