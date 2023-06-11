@@ -83,3 +83,18 @@ def student(student_id):
         storage.delete(student)
         storage.save()
         return make_response(jsonify({}), 200)
+
+
+@app_views.route(
+        '/students/<student_id>/courses',
+        methods=['GET'],
+        strict_slashes=False)
+def studentCourses(student_id):
+    """
+        Configures GET and POST methods for the student/<id>/courses route
+    """
+
+    student = storage.get('Student', student_id)
+    department = storage.get('Department', student.department_id)
+    list_courses = [course.to_dict() for course in department.courses]
+    return jsonify(list_courses)
