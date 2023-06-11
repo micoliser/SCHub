@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-""" Students route for database """
-from models.student import Student
+""" Teachers route for database """
+from models.teacher import Teacher
 from models import storage
 from api.views import app_views
 from flask import abort, jsonify, make_response, request
@@ -8,35 +8,24 @@ from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
-        '/students',
+        '/teachers',
         methods=['GET', 'POST'],
         strict_slashes=False)
-def students():
+def teachers():
     """
-        Configures GET and POST methods for the students route
+        Configures GET and POST methods for the teachers route
     """
 
     if request.method == 'GET':
-        level = request.args.get('level')
-        all_students = storage.all('Student').values()
-        if level is None:
-            list_students = [student.to_dict() for student in all_students]
-        else:
-            list_students = []
-            for student in all_students:
-                if student.current_level == int(level):
-                    list_students.append(student.to_dict())
-        return jsonify(list_students)
+        all_teachers = storage.all('Teacher').values()
+        list_teachers = [teacher.to_dict() for teacher in all_teachers]
+        return jsonify(list_teachers)
     else:
         if not request.get_json():
             abort(400, description="Not a valid JSON dict")
         required = ['first_name',
                     'last_name',
-                    'age',
-                    'matric_no',
                     'department_id',
-                    'start_level',
-                    'current_level',
                     'email',
                     'password']
         for parameter in required:
@@ -45,40 +34,40 @@ def students():
                       description="Missing required parameter: {}".format(parameter))
 
         data = request.get_json()
-        instance = Student(**data)
+        instance = Teacher(**data)
         storage.new(instance)
         storage.save()
         return make_response(jsonify(instance.to_dict()), 201)
 
 
 @app_views.route(
-        '/students/<student_id>',
+        '/teachers/<teacher_id>',
         methods=['GET', 'PUT', 'DELETE'],
         strict_slashes=False)
-def student(student_id):
+def teacher(teacher_id):
     """
-        Configures GET, PUT and DELETE for the student route
+        Configures GET, PUT and DELETE for the teacher route
     """
 
-    student = storage.get('Student', student_id)
-    if not student:
+    teacher = storage.get('Teacher', teacher_id)
+    if not teacher:
         abort(404)
 
     if request.method == 'GET':
-        return jsonify(student.to_dict())
+        return jsonify(teacher.to_dict())
     elif request.method == 'PUT':
         if not request.get_json():
             abort(400, description="Not a valid JSON")
 
-        ignore = ['id', 'created_at', 'start_level']
+        ignore = ['id', 'created_at']
         data = request.get_json()
         for key, value in data.items():
             if key not in ignore:
-                setattr(student, key, value)
+                setattr(teacher, key, value)
 
         storage.save()
-        return make_response(jsonify(student.to_dict()), 200)
+        return make_response(jsonify(teacher.to_dict()), 200)
     else:
-        storage.delete(student)
+        storage.delete(teacher)
         storage.save()
         return make_response(jsonify({}), 200)
