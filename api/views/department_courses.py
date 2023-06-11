@@ -27,9 +27,11 @@ def courses(department_id):
                     'level',
                     'course_id',
                     'teacher_id']
-        if 'name' not in request.get_json():
-            abort(400,
-                    description="Missing required parameter: name")
+        for parameter in required:
+            if parameter not in request.get_json():
+                abort(400,
+                      description="Missing required parameter: {}".format(
+                                                                   parameter))
 
         data = request.get_json()
         instance = Department(**data)

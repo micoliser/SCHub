@@ -42,7 +42,8 @@ def students():
         for parameter in required:
             if parameter not in request.get_json():
                 abort(400,
-                      description="Missing required parameter: {}".format(parameter))
+                      description="Missing required parameter: {}".format(
+                                                                   parameter))
 
         data = request.get_json()
         instance = Student(**data)

@@ -18,14 +18,15 @@ def departments():
 
     if request.method == 'GET':
         all_departments = storage.all('Department').values()
-        list_departments = [department.to_dict() for department in all_departments]
+        list_departments = [department.to_dict()
+                            for department in all_departments]
         return jsonify(list_departments)
     else:
         if not request.get_json():
             abort(400, description="Not a valid JSON dict")
         if 'name' not in request.get_json():
             abort(400,
-                    description="Missing required parameter: name")
+                  description="Missing required parameter: name")
 
         data = request.get_json()
         instance = Department(**data)

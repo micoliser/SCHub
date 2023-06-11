@@ -36,6 +36,7 @@ def not_found(err):
     response = make_response(jsonify({'Error': 'Not Found'}), 404)
     return response
 
+
 app.config['SWAGGER'] = {
         'title': 'SCHub API',
         'uiversion': 3
