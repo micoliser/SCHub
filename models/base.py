@@ -45,6 +45,7 @@ class BaseModel:
         if "_sa_instance_state" in self_dict:
             del self_dict["_sa_instance_state"]
 
-        self_dict["__class__"] = self.__class__.__name__
+        # Removed since it prnts in the api return
+        # self_dict["__class__"] = self.__class__.__name__
 
         return self_dict

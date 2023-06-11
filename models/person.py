@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-""" This module contains the person class for creating staffs  and student """
+"""
+    This module contains the person class for
+    creating staffs and student
+"""
 from email_validator import validate_email
 from hashlib import md5
 from sqlalchemy import Column, String

@@ -10,7 +10,7 @@ class Teacher(BaseModel, Person, Base):
     """ defines the teacher class """
 
     __tablename__ = "teachers"
-    department_id = Column(String(50),
+    department_id = Column(String(60),
                            ForeignKey("departments.id"),
                            nullable=False)
     courses = relationship("Course",

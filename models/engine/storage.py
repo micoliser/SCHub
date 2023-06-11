@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ This module contains the class for storage """
+
 from dotenv.main import load_dotenv
 from models.base import Base
 from models.admin import Admin
@@ -90,6 +91,11 @@ class Storage:
             obj = None
 
         return obj
+
+    def count(self, cls=None):
+        """ Returns the number of objects of a class """
+
+        return len(self.all(cls))
 
     def new(self, obj):
         """ Adds an object to the current session """

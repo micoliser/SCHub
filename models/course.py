@@ -8,7 +8,7 @@ class Course(BaseModel, Base):
     """ defines the course class """
 
     __tablename__ = "courses"
-    name = Column(String(45), nullable=False)
+    name = Column(String(60), nullable=False)
     level = Column(Integer, nullable=False)
     department_id = Column(String(50),
                            ForeignKey("departments.id"),
