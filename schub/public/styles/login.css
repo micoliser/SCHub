@@ -1,0 +1,74 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #202020;
+}
+
+.login-form {
+    background-color: #424242;
+    padding: 40px;
+    border-radius: 10px;
+    color: #fff;
+    text-align: center;
+    width: 27%;
+}
+
+.login-form p {
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.login-form select,
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    margin-bottom: 20px;
+    padding: 15px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+}
+
+.login-form select {
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+.login-form select:focus {
+    border: none;
+    outline: none;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    background-color: #616161;
+    color: #fff;
+    font-size: 16px;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    outline: none;
+    border-bottom: 3px solid #202020;
+    transition: border-bottom-color 1.5s ease;
+}
+
+.login-form input[type="submit"] {
+    background-color: #202020;
+    color: #fff;
+    cursor: pointer;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.login-form input[type="submit"]:hover {
+    background-color: #333;
+}
+
+.login-form h3 {
+    font-size: 20px;
+    margin: 20px 0;
+}
