@@ -12,7 +12,7 @@ class Student(BaseModel, Person, Base):
     age = Column(Integer, nullable=False)
     start_level = Column(Integer, nullable=False)
     current_level = Column(Integer, nullable=False)
-    matric_no = Column(String(30), nullable=False)
-    department_id = Column(String(50),
+    matric_no = Column(String(20), nullable=False)
+    department_id = Column(String(40),
                            ForeignKey("departments.id"),
                            nullable=False)

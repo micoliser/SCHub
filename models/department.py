@@ -10,7 +10,7 @@ class Department(BaseModel, Base):
     """ defines the department class """
 
     __tablename__ = "departments"
-    name = Column(String(45), nullable=False)
+    name = Column(String(60), nullable=False)
     teachers = relationship("Teacher",
                             backref="department",
                             cascade="all")

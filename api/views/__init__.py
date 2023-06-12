@@ -12,3 +12,4 @@ from api.views.index import *
 from api.views.students import *
 from api.views.teachers import *
 from api.views.teacher_courses import *
+from api.views.courses import *

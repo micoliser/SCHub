@@ -12,7 +12,7 @@ Base = declarative_base()
 class BaseModel:
     """ The base class for creating other classes """
 
-    id = Column(String(50),
+    id = Column(String(40),
                 primary_key=True,
                 nullable=False,
                 unique=True)

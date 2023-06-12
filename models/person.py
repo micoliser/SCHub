@@ -14,7 +14,7 @@ class Person:
     first_name = Column(String(45), nullable=False)
     last_name = Column(String(45), nullable=False)
     email = Column(String(45), nullable=False, unique=True)
-    password = Column(String(50), nullable=False)
+    password = Column(String(45), nullable=False)
 
     def __setattr__(self, name, value):
         """ hashes the password to an md5 when set """
