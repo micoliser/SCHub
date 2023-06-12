@@ -1,0 +1,32 @@
+				Data Model
+===============================================================================
+
+Departments (120)
+id =CONCATENATE("53af4926-52ee-41d0-9acc-ae7230", 300000+ROW()-1)
+===============================================================================
+
+Teachers (500)
+id =CONCATENATE("53af4926-52ee-41d0-9acc-ae7230", 400000+ROW()-1)
+department_id =CONCATENATE(
+		"53af4926-52ee-41d0-9acc-ae7230",
+		300000+RANDBETWEEN(1, 120))
+===============================================================================
+
+Course (600)
+id =CONCATENATE(
+		"53af4926-52ee-41d0-9acc-ae7230",
+		500000+ROW()-1)
+teacher_id =CONCATENATE(
+		"53af4926-52ee-41d0-9acc-ae7230",
+		400000+RANDBETWEEN(1, 500))
+===============================================================================
+
+Students
+age = RANDBETWEEN(16, 30)
+start_level = RANDBETWEEN(1, 2)
+current_level = RANDBETWEEN(start_level, 4)
+id =CONCATENATE("53af4926-52ee-41d0-9acc-ae7230", 200000+ROW()-1)
+department_id =CONCATENATE(
+		"53af4926-52ee-41d0-9acc-ae7230",
+		300000+RANDBETWEEN(1, 120))
+===============================================================================
