@@ -1,6 +1,5 @@
 setup_test_db.sql
 setup_dev_db.sql
-junk/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
