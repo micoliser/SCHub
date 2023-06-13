@@ -4,11 +4,12 @@
     creating staffs and student
 """
 from email_validator import validate_email
+from flask_login import UserMixin
 from hashlib import md5
 from sqlalchemy import Column, String
 
 
-class Person:
+class Person(UserMixin):
     """ The person class for creating staffs and student classes """
 
     first_name = Column(String(45), nullable=False)

@@ -1,10 +1,32 @@
+import { useContext, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "../pages/Layout";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
+import { AuthContext } from "./AuthContext";
 
 function App() {
+  const { login } = useContext(AuthContext);
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/auth/auth_status", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated) login(data.user);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    checkAuthStatus();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

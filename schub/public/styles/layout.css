@@ -9,14 +9,19 @@ header {
     display: flex;
     justify-content: space-between;
     background-color: #202020;
-    color: white;
     padding: 10px;
 }
 
-header h2,
-header p {
+header .head,
+header button {
+    display: inline-block;
+    text-decoration: none;
     border: 3px solid #989898;
     border-radius: 20px;
     line-height: 15px;
     padding: 10px;
+}
+
+header .head:hover, header button:hover {
+    cursor: pointer;
 }

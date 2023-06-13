@@ -16,6 +16,9 @@ def students():
         Configures GET and POST methods for the students route
     """
 
+    token = request.cookies.get('token')
+    print(token)
+
     if request.method == 'GET':
         level = request.args.get('level')
         all_students = storage.all('Student').values()

@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom"
+import React, { useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../components/AuthContext";
 
 function Home() {
-    return (
-        <>
-        <h1>SCHub</h1>
-        <Link to="/login">Login</Link>
-        </>
-    )
+  const { isLoggedIn } = useContext(AuthContext);
+
+  return (
+    <>
+      <h1>SCHub</h1>
+      {!isLoggedIn && <Link to="/login">Login</Link>}
+    </>
+  );
 }
 
-export default Home
+export default Home;
