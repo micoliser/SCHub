@@ -40,8 +40,10 @@ def login():
                     current_app.config['SECRET_KEY'],
                     algorithm='HS256')
 
+        user_dict = user.to_dict()
+        user_dict['type'] = login_type
         response = make_response(jsonify({'message': 'Login successful',
-                                          'user': user.to_dict(),
+                                          'user': user_dict,
                                           'type': login_type}), 200)
         response.set_cookie('token', token, httponly=False)
         return response
@@ -66,6 +68,8 @@ def auth_status():
     """ Checks the authentication status """
 
     if current_user.is_authenticated:
-        return jsonify({'authenticated': True, 'user': current_user.to_dict()})
+        user_dict = current_user.to_dict()
+        user_dict['type'] = current_user.__class__.__name__
+        return jsonify({'authenticated': True, 'user': user_dict})
     else:
         return jsonify({'authenticated': False})

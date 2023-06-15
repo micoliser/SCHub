@@ -1,11 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../components/AuthContext';
+import Button from '../components/Button';
+import { Navigate } from 'react-router-dom';
 
 function Login () {
-  const [type, setType] = useState('Student');
+  const [startLogin, setStartLogin] = useState(false);
+  const [type, setType] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useContext(AuthContext);
+  const { isLoggedIn, login } = useContext(AuthContext);
 
   async function handleLogin (e) {
     e.preventDefault();
@@ -28,42 +31,78 @@ function Login () {
     }
   }
 
-  return (
-    <div className='form-container'>
-      <form className='login-form' onSubmit={handleLogin}>
-        <p>Login as: </p>
-        <select
-          name='type'
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        >
-          <option>Student</option>
-          <option>Teacher</option>
-          <option>Admin</option>
-        </select>
-        <br />
-        <h3>Login as {type}</h3>
-        <input
-          type='text'
-          name='email'
-          placeholder='Enter Email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
-        <input
-          type='password'
-          name='password'
-          placeholder='Enter Password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-        <input type='submit' value='Login' />
-        <br />
-      </form>
-    </div>
-  );
+  function handleStartLogin (e) {
+    if (startLogin) {
+      setStartLogin(false);
+      setType('');
+      setEmail('');
+      setPassword('');
+    } else {
+      setStartLogin(true);
+      setType(e.target.name);
+    }
+  }
+
+  return isLoggedIn
+    ? (
+      <Navigate replace to={`/${type.toLowerCase()}-dashboard`} />
+      )
+    : (
+      <div className='form-container'>
+        {startLogin
+          ? (
+            <div className='login-container'>
+              <Button
+                name={type}
+                click={handleStartLogin}
+                text={`Login as ${type}`}
+              />
+              <form className='login-form' onSubmit={handleLogin}>
+                <input
+                  type='text'
+                  name='email'
+                  placeholder='Enter Email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <br />
+                <input
+                  type='password'
+                  name='password'
+                  placeholder='Enter Password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <br />
+                <input type='submit' value='Login' />
+                <br />
+              </form>
+            </div>
+            )
+          : (
+            <div className='login-container'>
+              <Button
+                name='Student'
+                click={handleStartLogin}
+                text='Login as Student'
+              />
+              <br />
+              <Button
+                name='Teacher'
+                click={handleStartLogin}
+                text='Login as Teacher'
+              />
+              <br />
+              <Button
+                name='Admin'
+                click={handleStartLogin}
+                text=' Login as Admin'
+              />
+              <br />
+            </div>
+            )}
+      </div>
+      );
 }
 
 export default Login;

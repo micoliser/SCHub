@@ -5,23 +5,60 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+body {
+    background-color:#16161A;
+    color: #FFFFFE
+}
+
+.home {
+    text-align: center;
+}
+
+.home h1 {
+    font-size: 4rem;
+}
+
 header {
     display: flex;
     justify-content: space-between;
-    background-color: #202020;
-    padding: 10px;
+    align-items: center;
+    padding: 1% 4%;
+    height: 95px;
 }
 
-header .head,
-header button {
+header div {
+    display: flex;
+    justify-content: flex-end;
+    height: 80%;
+    width: 20%;
+}
+
+header .head, header .sign {
     display: inline-block;
     text-decoration: none;
-    border: 3px solid #989898;
-    border-radius: 20px;
-    line-height: 15px;
-    padding: 10px;
+    color: #FFFFFE;
 }
 
-header .head:hover, header button:hover {
+header .head {
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+header .sign {
+    border: 3px solid #7F5AF0;
+    background-color: #16161A;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    padding: 0.6% 2%;
     cursor: pointer;
+}
+
+.sign-div .sign {
+    padding: 0.2% 7%;
+}
+
+.sign-div .dash {
+    margin-right: 20px;
+    line-height: 2.3;
+    background-color: #2CB67D;
 }
