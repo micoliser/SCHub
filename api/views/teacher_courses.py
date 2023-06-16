@@ -16,5 +16,7 @@ def teacher_courses(teacher_id):
     """
 
     teacher = storage.get('Teacher', teacher_id)
+    if not teacher:
+        abort(404)
     list_courses = [course.to_dict() for course in teacher.courses]
     return jsonify(list_courses)

@@ -29,6 +29,7 @@ header {
 header div {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     height: 80%;
     width: 20%;
 }
@@ -54,11 +55,12 @@ header .sign {
 }
 
 .sign-div .sign {
-    padding: 0.2% 7%;
+    height: 75%;
+    padding: 0 7%;
 }
 
 .sign-div .dash {
     margin-right: 20px;
-    line-height: 2.3;
+    line-height: 1.9;
     background-color: #2CB67D;
 }

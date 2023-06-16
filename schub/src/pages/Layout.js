@@ -1,24 +1,22 @@
 import { useContext, useState } from 'react';
+import axios from 'axios';
 import { Outlet, Link } from 'react-router-dom';
 import { AuthContext } from '../components/AuthContext';
 
 function Layout () {
-  const { isLoggedIn, logout, type } = useContext(AuthContext);
+  const { isLoggedIn, logout, user } = useContext(AuthContext);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   async function handleLogout () {
-    try {
-      const res = await fetch('http://localhost:5000/auth/logout', {
-        method: 'GET',
-        credentials: 'include'
-      });
-      if (res.ok) {
+    axios
+      .get('http://localhost:5000/auth/logout', { withCredentials: true })
+      .then((res) => {
         logout();
         setIsLoggingIn(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+      })
+      .catch((err) => {
+        console.log('Error:', err);
+      });
   }
 
   if (isLoggedIn && isLoggingIn) setIsLoggingIn(false);
@@ -34,7 +32,7 @@ function Layout () {
             ? (
               <div className='sign-div'>
                 <Link
-                  to={`/${type.toLowerCase()}-dashboard`}
+                  to={`/${user.type.toLowerCase()}-dashboard`}
                   className='sign dash'
                 >
                   Dashboard

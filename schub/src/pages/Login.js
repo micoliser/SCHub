@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import axios from 'axios';
 import { AuthContext } from '../components/AuthContext';
 import Button from '../components/Button';
 import { Navigate } from 'react-router-dom';
@@ -8,27 +9,23 @@ function Login () {
   const [type, setType] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { isLoggedIn, login } = useContext(AuthContext);
+  const { isLoggedIn, login, user } = useContext(AuthContext);
 
   async function handleLogin (e) {
     e.preventDefault();
-    try {
-      const res = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ type, email, password }),
-        credentials: 'include'
-      });
-
-      if (res.ok) {
-        const data = await res.json();
+    axios
+      .post(
+        'http://localhost:5000/auth/login',
+        { type, email, password },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        const data = res.data;
         login(data.user);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+      })
+      .catch((err) => {
+        console.log('Error:', err);
+      });
   }
 
   function handleStartLogin (e) {
@@ -45,7 +42,7 @@ function Login () {
 
   return isLoggedIn
     ? (
-      <Navigate replace to={`/${type.toLowerCase()}-dashboard`} />
+      <Navigate replace to={`/${user.type.toLowerCase()}-dashboard`} />
       )
     : (
       <div className='form-container'>
