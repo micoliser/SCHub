@@ -23,12 +23,20 @@ def students():
         level = request.args.get('level')
         all_students = storage.all('Student').values()
         if level is None:
-            list_students = [student.to_dict() for student in all_students]
+            list_students = []
+            for student in all_students:
+                student_dict = student.to_dict()
+                department = storage.get("Department", student.department_id)
+                student_dict["department"] = department.name
+                list_students.append(student_dict)
         else:
             list_students = []
             for student in all_students:
                 if student.current_level == int(level):
-                    list_students.append(student.to_dict())
+                    student_dict = student.to_dict()
+                    department = storage.get("Department", student.department_id)
+                    student_dict["department"] = department.name
+                    list_students.append(student_dict)
         return jsonify(list_students)
     else:
         if not request.get_json():
@@ -69,7 +77,10 @@ def student(student_id):
         abort(404)
 
     if request.method == 'GET':
-        return jsonify(student.to_dict())
+        student_dict = student.to_dict()
+        department = storage.get("Department", student.department_id)
+        student_dict["department"] = department.name
+        return jsonify(student_dict)
     elif request.method == 'PUT':
         if not request.get_json():
             abort(400, description="Not a valid JSON")

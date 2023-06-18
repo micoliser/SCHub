@@ -8,6 +8,7 @@ import AdminDashboard from '../pages/AdminDashboard';
 import StudentDashboard from '../pages/StudentDashboard';
 import TeacherDashboard from '../pages/TeacherDashboard';
 import NotFound from '../pages/NotFound';
+import StudentManager from '../pages/StudentManager';
 import { AuthContext } from './AuthContext';
 
 function App () {
@@ -18,16 +19,16 @@ function App () {
     axios
       .get('http://localhost:5000/auth/auth_status', { withCredentials: true })
       .then((res) => {
+        setIsLoading(false);
         const data = res.data;
         if (data.authenticated) {
           login(data.user);
-          setIsLoading(false);
         }
       })
       .catch((err) => {
         console.log('Error:', err);
       });
-  }, []);
+  }, [login]);
 
   return (
     <BrowserRouter>
@@ -46,6 +47,10 @@ function App () {
           <Route
             path='student-dashboard'
             element={<StudentDashboard loading={isLoading} />}
+          />
+          <Route
+            path='admin-dashboard/students'
+            element={<StudentManager loading={isLoading} />}
           />
           <Route path='*' element={<NotFound />} />
         </Route>

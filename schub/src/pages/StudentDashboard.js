@@ -46,7 +46,7 @@ function StudentDashboard ({ loading }) {
       setFilteredCourses(filteredCourses);
       setCourses(filteredCourses);
     }
-  }, [allCourses]);
+  }, [allCourses, user.current_level]);
 
   function showAll () {
     if (show) {

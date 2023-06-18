@@ -8,7 +8,6 @@ const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     setIsLoggedIn(true);
-    console.log(userData);
     setUser(userData);
   };
 

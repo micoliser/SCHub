@@ -3,6 +3,7 @@ import axios from 'axios';
 import { AuthContext } from '../components/AuthContext';
 import Button from '../components/Button';
 import { Navigate } from 'react-router-dom';
+import '../styles/login.css';
 
 function Login () {
   const [startLogin, setStartLogin] = useState(false);

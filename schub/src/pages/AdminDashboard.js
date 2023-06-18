@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { AuthContext } from '../components/AuthContext';
+import '../styles/admin.css';
 
 function AdminDashboard ({ loading }) {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -16,7 +17,7 @@ function AdminDashboard ({ loading }) {
         <section className='admin-dashboard'>
           <h1>Welcome {user.first_name}</h1>
           <p>What would you like to do today?</p>
-          <Link to='/students'>Manage Students</Link>
+          <Link to='/admin-dashboard/students'>Manage Students</Link>
           <br />
           <Link to='/teachers'>Manage Teachers</Link>
           <br />

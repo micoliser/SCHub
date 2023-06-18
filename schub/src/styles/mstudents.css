@@ -1,0 +1,137 @@
+.manage-students {
+    width: 90%;
+    margin: 2% auto;
+    text-align: center;
+}
+
+.manage-students h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.manage-students .search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50%;
+    margin: 10px auto;
+}
+
+.search input, .search button  {
+    height: 100%;
+    display: inline-block;
+    padding: 15px 20px;
+    border-radius: 25px;
+    margin: 3px;
+    background-color: #16161A;
+    border: 3px solid #7F5AF0;
+    color: #FFFFFE;
+    font-size: 1.1rem;
+}
+
+.search input {
+    width: 60%;
+}
+
+.search input:focus {
+    outline: none;
+}
+
+.search button {
+    cursor: pointer;
+}
+
+.search button:hover {
+    background-color: #7F5AF0;
+}
+
+.filter {
+    margin-bottom: 30px;
+}
+
+.filter h3 {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 3%;
+}
+
+.filters {
+    width: 40%;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    border-radius: 30px;
+}
+
+.filters .level, .filters .department {
+    border-right: 2px solid #FFFFFE;
+    padding-right: 15px;
+}
+
+.manage-students table {
+    width: 95%;
+    margin: auto;
+    text-align: left;
+}
+
+.manage-students th, .manage-students tr, .manage-students td {
+    padding: 10px;
+}
+
+button {
+    cursor: pointer;
+}
+
+button.update, button.delete {
+    display: inline-block;
+    padding: 5px 7px;
+    border: none;
+    border-radius: 10px;
+    color: #FFFFFE;
+}
+
+button.update {
+    background-color: #2CB67D;
+    
+}
+
+button.delete {
+    background-color: red;
+}
+
+.deleting {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+}
+
+.deleting p {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.deleting button {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 2px 5px;
+    margin-right: 10px;
+    border-radius: 10px;
+    color: #FFFFFE;
+}
+
+button.back {
+    background-color: #2CB67D;
+}
+
+button.more {
+    display: inline-block;
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 15px;
+    color: #FFFFFE;
+    background-color: #2CB67D;
+}

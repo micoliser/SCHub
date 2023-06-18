@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 import { Outlet, Link } from 'react-router-dom';
 import { AuthContext } from '../components/AuthContext';
+import '../styles/layout.css';
 
 function Layout () {
   const { isLoggedIn, logout, user } = useContext(AuthContext);
