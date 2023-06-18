@@ -1,9 +1,7 @@
-function Button ({ className, name, text, click }) {
-  return (
-    <button className={className} name={name} onClick={click}>
-      {text}
-    </button>
-  );
+import React from "react";
+
+function Button(props) {
+  return <button {...props}>{props.children}</button>;
 }
 
 export default Button;
