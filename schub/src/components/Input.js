@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-function Input(props) {
+function Input (props) {
   return <input {...props} />;
 }
 

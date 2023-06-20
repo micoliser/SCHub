@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-function Form(props) {
+function Form (props) {
   return <form {...props}>{props.children}</form>;
 }
 

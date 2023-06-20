@@ -8,16 +8,13 @@ from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
-        '/students',
-        methods=['GET', 'POST'],
-        strict_slashes=False)
+    '/students',
+    methods=['GET', 'POST'],
+    strict_slashes=False)
 def students():
     """
         Configures GET and POST methods for the students route
     """
-
-    token = request.cookies.get('token')
-    print(token)
 
     if request.method == 'GET':
         level = request.args.get('level')
@@ -26,21 +23,22 @@ def students():
             list_students = []
             for student in all_students:
                 student_dict = student.to_dict()
-                department = storage.get("Department", student.department_id)
-                student_dict["department"] = department.name
+                department = storage.get('Department', student.department_id)
+                student_dict['department'] = department.name
                 list_students.append(student_dict)
         else:
             list_students = []
             for student in all_students:
                 if student.current_level == int(level):
                     student_dict = student.to_dict()
-                    department = storage.get("Department", student.department_id)
-                    student_dict["department"] = department.name
+                    department = storage.get('Department',
+                                             student.department_id)
+                    student_dict['department'] = department.name
                     list_students.append(student_dict)
         return jsonify(list_students)
     else:
         if not request.get_json():
-            abort(400, description="Not a valid JSON dict")
+            abort(400, description='Not a valid JSON dict')
         required = ['first_name',
                     'last_name',
                     'age',
@@ -53,8 +51,8 @@ def students():
         for parameter in required:
             if parameter not in request.get_json():
                 abort(400,
-                      description="Missing required parameter: {}".format(
-                                                                   parameter))
+                      description='Missing required parameter: {}'.format(
+                          parameter))
 
         data = request.get_json()
         instance = Student(**data)
@@ -64,9 +62,9 @@ def students():
 
 
 @app_views.route(
-        '/students/<student_id>',
-        methods=['GET', 'PUT', 'DELETE'],
-        strict_slashes=False)
+    '/students/<student_id>',
+    methods=['GET', 'PUT', 'DELETE'],
+    strict_slashes=False)
 def student(student_id):
     """
         Configures GET, PUT and DELETE for the student route
@@ -78,12 +76,12 @@ def student(student_id):
 
     if request.method == 'GET':
         student_dict = student.to_dict()
-        department = storage.get("Department", student.department_id)
-        student_dict["department"] = department.name
+        department = storage.get('Department', student.department_id)
+        student_dict['department'] = department.name
         return jsonify(student_dict)
     elif request.method == 'PUT':
         if not request.get_json():
-            abort(400, description="Not a valid JSON")
+            abort(400, description='Not a valid JSON')
 
         ignore = ['id', 'created_at', 'start_level']
         data = request.get_json()
@@ -100,9 +98,9 @@ def student(student_id):
 
 
 @app_views.route(
-        '/students/<student_id>/courses',
-        methods=['GET'],
-        strict_slashes=False)
+    '/students/<student_id>/courses',
+    methods=['GET'],
+    strict_slashes=False)
 def studentCourses(student_id):
     """
         Configures GET and POST methods for the student/<id>/courses route

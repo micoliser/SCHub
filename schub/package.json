@@ -39,6 +39,9 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.43.0"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.43.0",
+    "eslint-config-semistandard": "^17.0.0",
+    "prettier": "^2.8.8"
   }
 }

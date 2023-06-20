@@ -1,5 +1,11 @@
 setup_test_db.sql
 setup_dev_db.sql
+.prettierrc
+.eslintrc
+.vscode
+
+
+# -------------- PYTHON DEV ---------------- #
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

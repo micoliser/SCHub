@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-function Button(props) {
+function Button (props) {
   return <button {...props}>{props.children}</button>;
 }
 

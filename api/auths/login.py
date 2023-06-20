@@ -30,15 +30,15 @@ def login():
                 user = obj
                 break
             else:
-                return make_response(jsonify({'message': 'Incorrect Password'}),
-                                     401)
+                response = jsonify({'message': 'Incorrect Password'})
+                return make_response(response, 401)
 
     if user:
         login_user(user)
         token = jwt.encode(
-                    {'user_id': user.id, 'user_type': login_type},
-                    current_app.config['SECRET_KEY'],
-                    algorithm='HS256')
+            {'user_id': user.id, 'user_type': login_type},
+            current_app.config['SECRET_KEY'],
+            algorithm='HS256')
 
         user_dict = user.to_dict()
         user_dict['type'] = login_type
@@ -48,7 +48,7 @@ def login():
         response.set_cookie('token', token, httponly=False)
         return response
     else:
-        return make_response(jsonify({'message': 'user not found'}), 404)
+        return make_response(jsonify({'message': 'user not found'}), 401)
 
 
 @auth.route('/logout')
@@ -71,5 +71,4 @@ def auth_status():
         user_dict = current_user.to_dict()
         user_dict['type'] = current_user.__class__.__name__
         return jsonify({'authenticated': True, 'user': user_dict})
-    else:
-        return jsonify({'authenticated': False})
+    return jsonify({'authenticated': False})

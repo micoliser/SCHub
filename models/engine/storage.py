@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ This module contains the class for storage """
 
+from contextlib import contextmanager
 from dotenv.main import load_dotenv
 from models.base import Base
 from models.admin import Admin
@@ -11,6 +12,7 @@ from models.teacher import Teacher
 from os import getenv, environ
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.pool import QueuePool
 
 
 load_dotenv()
@@ -20,8 +22,6 @@ class Storage:
     """ database storage class """
 
     __engine = None
-    __session = None
-    __objects = {}
 
     def __init__(self):
         """ initializes self """
@@ -45,7 +45,12 @@ class Storage:
         self.__engine = create_engine("{}+{}://{}:{}@{}/{}".format(
                                       dialect, driver, user,
                                       password, host, db),
-                                      pool_pre_ping=True)
+                                      pool_pre_ping=True,
+                                      poolclass=QueuePool,
+                                      pool_size=10)
+        self.session_factory = sessionmaker(bind=self.__engine,
+                                            expire_on_commit=False)
+        self.Session = scoped_session(self.session_factory)
 
         if is_test:
             Base.metadata.drop_all(self.__engine)
@@ -54,30 +59,40 @@ class Storage:
         """ Reloads the session and create tables """
 
         Base.metadata.create_all(self.__engine)
-        session = sessionmaker(bind=self.__engine,
-                               expire_on_commit=False)
-        Session = scoped_session(session)
-        self.__session = Session()
+
+    @contextmanager
+    def session_scope(self):
+        session = self.Session()
+        try:
+            yield session
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise Exception
+        finally:
+            session.close()
 
     def all(self, cls=None):
         """ gets all objects """
 
-        self.__objects = {}
+        objects = {}
         if cls:
             if type(cls) is str:
                 cls = eval(cls)
-            query = self.__session.query(cls)
-            for obj in query:
-                key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                self.__objects[key] = obj
-        else:
-            for model in [Admin, Teacher, Student, Department, Course]:
-                query = self.__session.query(model)
+            with self.session_scope() as session:
+                query = session.query(cls)
                 for obj in query:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                    self.__objects[key] = obj
+                    objects[key] = obj
+        else:
+            for model in [Admin, Teacher, Student, Department, Course]:
+                with self.session_scope() as session:
+                    query = session.query(model)
+                    for obj in query:
+                        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                        objects[key] = obj
 
-        return self.__objects
+        return objects
 
     def get(self, cls, id):
         """ gets a particular object """
@@ -85,10 +100,11 @@ class Storage:
         if type(cls) is str:
             cls = eval(cls)
 
-        try:
-            obj = self.__session.query(cls).filter(cls.id == id).one()
-        except Exception:
-            obj = None
+        with self.session_scope() as session:
+            try:
+                obj = session.query(cls).filter(cls.id == id).one()
+            except Exception:
+                obj = None
 
         return obj
 
@@ -100,24 +116,22 @@ class Storage:
     def new(self, obj):
         """ Adds an object to the current session """
 
-        self.__session.add(obj)
+        with self.session_scope() as session:
+            self.session.add(obj)
 
     def save(self):
         """ commits the current session """
 
-        self.__session.commit()
+        with self.session_scope() as session:
+            self.session.commit()
 
     def delete(self, obj):
         """ deletes an object from the current session """
 
-        self.__session.delete(obj)
-
-    def get_session(self):
-        """ returns the session for other queries not defined """
-
-        return self.__session
+        with self.session_scope() as session:
+            self.session.delete(obj)
 
     def close(self):
         """ removes the current session """
 
-        self.__session.close()
+        self.Session.remove()
