@@ -89,6 +89,7 @@ def student(student_id):
             if key not in ignore:
                 setattr(student, key, value)
 
+        storage.new(student)
         storage.save()
         return make_response(jsonify(student.to_dict()), 200)
     else:

@@ -8,9 +8,9 @@ from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
-        '/courses',
-        methods=['GET', 'POST'],
-        strict_slashes=False)
+    '/courses',
+    methods=['GET', 'POST'],
+    strict_slashes=False)
 def allCourses():
     """
         Configures GET and POST methods for the courses route
@@ -38,7 +38,7 @@ def allCourses():
             if parameter not in request.get_json():
                 abort(400,
                       description="Missing required parameter: {}".format(
-                                                                  parameter))
+                          parameter))
 
         data = request.get_json()
         instance = Course(**data)
@@ -48,9 +48,9 @@ def allCourses():
 
 
 @app_views.route(
-        '/courses/<course_id>',
-        methods=['GET', 'PUT', 'DELETE'],
-        strict_slashes=False)
+    '/courses/<course_id>',
+    methods=['GET', 'PUT', 'DELETE'],
+    strict_slashes=False)
 def oneCourse(course_id):
     """
         Configures GET, PUT and DELETE for the course route
@@ -72,6 +72,7 @@ def oneCourse(course_id):
             if key not in ignore:
                 setattr(course, key, value)
 
+        storage.new(course)
         storage.save()
         return make_response(jsonify(course.to_dict()), 200)
     else:
@@ -81,9 +82,9 @@ def oneCourse(course_id):
 
 
 @app_views.route(
-        '/courses/<course_id>/teacher',
-        methods=['GET'],
-        strict_slashes=False)
+    '/courses/<course_id>/teacher',
+    methods=['GET'],
+    strict_slashes=False)
 def courseTeacher(course_id):
     """
         Configures GET and POST methods for the course/<id>/courses route

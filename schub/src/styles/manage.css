@@ -1,15 +1,15 @@
-.manage-students {
+.manage-students, .manage-teachers {
     width: 90%;
     margin: 2% auto;
     text-align: center;
 }
 
-.manage-students h1 {
+h1 {
     font-size: 2rem;
     margin-bottom: 30px;
 }
 
-.manage-students a  {
+.manage-students a, .manage-teachers a  {
     color: #FFFFFE;
     display: inline-block;
     background-color: #2CB67D;
@@ -18,7 +18,7 @@
     text-decoration: none;
 }
 
-.manage-students .search {
+.search {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,69 +86,5 @@
 }
 
 .filters button:hover {
-    background-color: #2CB67D;
-}
-
-.manage-students table {
-    width: 95%;
-    margin: auto;
-    text-align: left;
-}
-
-.manage-students th, .manage-students tr, .manage-students td {
-    padding: 10px;
-}
-
-button {
-    cursor: pointer;
-}
-
-button.update, button.delete {
-    display: inline-block;
-    padding: 5px 7px;
-    border: none;
-    border-radius: 10px;
-    color: #FFFFFE;
-}
-
-button.update {
-    background-color: #2CB67D;
-    
-}
-
-button.delete {
-    background-color: red;
-}
-
-.deleting {
-    display: flex;
-    flex-wrap: wrap;
-    /* justify-content: center; */
-}
-
-.deleting p {
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-.deleting button {
-    display: inline-block;
-    font-size: 0.7rem;
-    padding: 2px 5px;
-    margin-right: 10px;
-    border-radius: 10px;
-    color: #FFFFFE;
-}
-
-button.back {
-    background-color: #2CB67D;
-}
-
-button.more {
-    display: inline-block;
-    padding: 10px 15px;
-    margin-top: 10px;
-    border-radius: 15px;
-    color: #FFFFFE;
     background-color: #2CB67D;
 }

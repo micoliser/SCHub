@@ -8,9 +8,9 @@ from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
-        '/departments',
-        methods=['GET', 'POST'],
-        strict_slashes=False)
+    '/departments',
+    methods=['GET', 'POST'],
+    strict_slashes=False)
 def departments():
     """
         Configures GET and POST methods for the departments route
@@ -36,9 +36,9 @@ def departments():
 
 
 @app_views.route(
-        '/departments/<department_id>',
-        methods=['GET', 'PUT', 'DELETE'],
-        strict_slashes=False)
+    '/departments/<department_id>',
+    methods=['GET', 'PUT', 'DELETE'],
+    strict_slashes=False)
 def department(department_id):
     """
         Configures GET, PUT and DELETE for the department route
@@ -60,6 +60,7 @@ def department(department_id):
             if key not in ignore:
                 setattr(department, key, value)
 
+        storage.new(department)
         storage.save()
         return make_response(jsonify(department.to_dict()), 200)
     else:

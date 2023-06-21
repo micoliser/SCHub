@@ -5,13 +5,13 @@ import Input from './Input';
 import Button from './Button';
 import '../styles/updateform.css';
 
-function UpdateForm ({ type, name, id, setUpdating, setUpdateStudent }) {
+function UpdateForm({ type, name, id, setUpdating, setUpdateStudent }) {
   const [fName, setFName] = useState('');
   const [lName, setLName] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
 
-  function doUpdate (e) {
+  function doUpdate(e) {
     e.preventDefault();
     const data = {};
     if (fName) data.first_name = fName;
@@ -21,15 +21,15 @@ function UpdateForm ({ type, name, id, setUpdating, setUpdateStudent }) {
 
     axios
       .put(`http://localhost:5000/api/${type}s/${id}`, data, {
-        withCredentials: true
+        withCredentials: true,
       })
       .then((res) => {
-        if (res.ok) backFromUpdate();
+        backFromUpdate();
       })
       .catch((err) => console.log('Error:', err));
   }
 
-  function backFromUpdate () {
+  function backFromUpdate() {
     setUpdating(false);
     setUpdateStudent({ id: '', name: '' });
     setFName('');

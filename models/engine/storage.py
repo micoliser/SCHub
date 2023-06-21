@@ -117,19 +117,19 @@ class Storage:
         """ Adds an object to the current session """
 
         with self.session_scope() as session:
-            self.session.add(obj)
+            session.add(obj)
 
     def save(self):
         """ commits the current session """
 
         with self.session_scope() as session:
-            self.session.commit()
+            session.commit()
 
     def delete(self, obj):
         """ deletes an object from the current session """
 
         with self.session_scope() as session:
-            self.session.delete(obj)
+            session.delete(obj)
 
     def close(self):
         """ removes the current session """

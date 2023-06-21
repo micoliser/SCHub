@@ -10,9 +10,10 @@ import StudentDashboard from '../pages/StudentDashboard';
 import TeacherDashboard from '../pages/TeacherDashboard';
 import NotFound from '../pages/NotFound';
 import StudentManager from '../pages/StudentManager';
+import TeacherManager from '../pages/TeacherManager';
 import CreateNew from '../pages/Create';
 
-function App () {
+function App() {
   const [isLoading, setIsLoading] = useState(true);
   const { login } = useContext(AuthContext);
 
@@ -38,16 +39,16 @@ function App () {
           <Route index element={<Home />} />
           <Route path='login' element={<Login />} />
           <Route
-            path='admin-dashboard'
-            element={<AdminDashboard loading={isLoading} />}
+            path='student-dashboard'
+            element={<StudentDashboard loading={isLoading} />}
           />
           <Route
             path='teacher-dashboard'
             element={<TeacherDashboard loading={isLoading} />}
           />
           <Route
-            path='student-dashboard'
-            element={<StudentDashboard loading={isLoading} />}
+            path='admin-dashboard'
+            element={<AdminDashboard loading={isLoading} />}
           />
           <Route
             path='admin-dashboard/students'
@@ -56,6 +57,14 @@ function App () {
           <Route
             path='admin-dashboard/students/new'
             element={<CreateNew type='student' />}
+          />
+          <Route
+            path='admin-dashboard/teachers'
+            element={<TeacherManager loading={isLoading} />}
+          />
+          <Route
+            path='admin-dashboard/teachers/new'
+            element={<CreateNew type='teacher' />}
           />
           <Route path='*' element={<NotFound />} />
         </Route>

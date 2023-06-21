@@ -8,9 +8,9 @@ from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
-        '/teachers',
-        methods=['GET', 'POST'],
-        strict_slashes=False)
+    '/teachers',
+    methods=['GET', 'POST'],
+    strict_slashes=False)
 def teachers():
     """
         Configures GET and POST methods for the teachers route
@@ -18,7 +18,12 @@ def teachers():
 
     if request.method == 'GET':
         all_teachers = storage.all('Teacher').values()
-        list_teachers = [teacher.to_dict() for teacher in all_teachers]
+        list_teachers = []
+        for teacher in all_teachers:
+            teacher_dict = teacher.to_dict()
+            department = storage.get('Department', teacher.department_id)
+            teacher_dict['department'] = department.name
+            list_teachers.append(teacher_dict)
         return jsonify(list_teachers)
     else:
         if not request.get_json():
@@ -32,7 +37,7 @@ def teachers():
             if parameter not in request.get_json():
                 abort(400,
                       description="Missing required parameter: {}".format(
-                                                                   parameter))
+                          parameter))
 
         data = request.get_json()
         instance = Teacher(**data)
@@ -42,9 +47,9 @@ def teachers():
 
 
 @app_views.route(
-        '/teachers/<teacher_id>',
-        methods=['GET', 'PUT', 'DELETE'],
-        strict_slashes=False)
+    '/teachers/<teacher_id>',
+    methods=['GET', 'PUT', 'DELETE'],
+    strict_slashes=False)
 def teacher(teacher_id):
     """
         Configures GET, PUT and DELETE for the teacher route
@@ -55,7 +60,10 @@ def teacher(teacher_id):
         abort(404)
 
     if request.method == 'GET':
-        return jsonify(teacher.to_dict())
+        teacher_dict = teacher.to_dict()
+        department = storage.get('Department', teacher.department_id)
+        teacher_dict['department'] = department.name
+        return jsonify(teacher_dict)
     elif request.method == 'PUT':
         if not request.get_json():
             abort(400, description="Not a valid JSON")
@@ -66,6 +74,7 @@ def teacher(teacher_id):
             if key not in ignore:
                 setattr(teacher, key, value)
 
+        storage.new(teacher)
         storage.save()
         return make_response(jsonify(teacher.to_dict()), 200)
     else:

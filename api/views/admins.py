@@ -8,9 +8,9 @@ from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
-        '/admins',
-        methods=['GET', 'POST'],
-        strict_slashes=False)
+    '/admins',
+    methods=['GET', 'POST'],
+    strict_slashes=False)
 def admins():
     """
         Configures GET and POST methods for the admins route
@@ -31,7 +31,7 @@ def admins():
             if parameter not in request.get_json():
                 abort(400,
                       description="Missing required parameter: {}".format(
-                                                                  parameter))
+                          parameter))
 
         data = request.get_json()
         instance = Admin(**data)
@@ -41,9 +41,9 @@ def admins():
 
 
 @app_views.route(
-        '/admins/<admin_id>',
-        methods=['GET', 'PUT', 'DELETE'],
-        strict_slashes=False)
+    '/admins/<admin_id>',
+    methods=['GET', 'PUT', 'DELETE'],
+    strict_slashes=False)
 def admin(admin_id):
     """
         Configures GET, PUT and DELETE for the admin route
@@ -65,6 +65,7 @@ def admin(admin_id):
             if key not in ignore:
                 setattr(admin, key, value)
 
+        storage.new(admin)
         storage.save()
         return make_response(jsonify(admin.to_dict()), 200)
     else:
