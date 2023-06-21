@@ -109,5 +109,7 @@ def studentCourses(student_id):
 
     student = storage.get('Student', student_id)
     department = storage.get('Department', student.department_id)
-    list_courses = [course.to_dict() for course in department.courses]
+    with storage.session_scope() as session:
+        department = session.merge(department)
+        list_courses = [course.to_dict() for course in department.courses]
     return jsonify(list_courses)

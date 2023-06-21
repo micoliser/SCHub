@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import Button from '../components/Button';
+import LoadingPage from '../components/Loading';
 
 function StudentDashboard({ loading }) {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -59,9 +60,7 @@ function StudentDashboard({ loading }) {
   }
 
   return loading ? (
-    <div>
-      <h2>Loading...</h2>
-    </div>
+    <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Student' ? (
       <section>

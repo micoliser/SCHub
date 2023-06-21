@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import Form from '../components/Form';
 import Input from '../components/Input';
+import { AuthContext } from '../contexts/AuthContext';
 import '../styles/create.css';
 
-function CreateNew ({ type }) {
+function CreateNew({ type }) {
+  const { isLoggedIn, user } = useContext(AuthContext);
+
   const [departments, setDepartments] = useState([]);
   const [fName, setFName] = useState('');
   const [lName, setLName] = useState('');
@@ -26,13 +30,13 @@ function CreateNew ({ type }) {
       });
   }, []);
 
-  function createNew (e) {
+  function createNew(e) {
     e.preventDefault();
     const data = {
       first_name: fName,
       last_name: lName,
       email: email,
-      department_id: departmentId
+      department_id: departmentId,
     };
     let url;
 
@@ -55,7 +59,7 @@ function CreateNew ({ type }) {
     clearForm();
   }
 
-  function clearForm () {
+  function clearForm() {
     setFName('');
     setLName('');
     setEmail('');
@@ -65,84 +69,90 @@ function CreateNew ({ type }) {
     setDepartmentId('');
   }
 
-  return (
-    <div>
-      <Form onSubmit={createNew} className='create'>
-        <h3>Register new student</h3>
-        <Input
-          type='text'
-          name='fName'
-          placeholder='Enter first name'
-          value={fName}
-          onChange={(e) => setFName(e.target.value)}
-        />
-        <br />
-        <Input
-          type='text'
-          name='lName'
-          placeholder='Enter last name'
-          value={lName}
-          onChange={(e) => setLName(e.target.value)}
-        />
-        <br />
-        <Input
-          type='email'
-          name='email'
-          placeholder='Enter email'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
-        {type === 'student' && (
-          <>
-            <Input
-              type='number'
-              name='age'
-              placeholder='Enter age'
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-            />
-            <br />
-            <Input
-              type='number'
-              name='level'
-              placeholder='Enter level'
-              value={level}
-              onChange={(e) => setLevel(e.target.value)}
-            />
-            <br />
-            <Input
-              type='text'
-              name='matricNo'
-              placeholder='Enter matric number'
-              value={matricNo}
-              onChange={(e) => setMatricNo(e.target.value)}
-            />
-            <br />
-          </>
-        )}
-        {departments.length > 0 && (
-          <>
-            <p>Choose department:</p>
-            <select
-              onChange={(e) => {
-                setDepartmentId(
-                  e.target.options[e.target.selectedIndex].getAttribute('id')
-                );
-              }}
-            >
-              {departments.map((department) => (
-                <option key={department.id} id={department.id}>
-                  {department.name}
-                </option>
-              ))}
-            </select>
-            <br />
-          </>
-        )}
-        <Input type='submit' name='create' />
-      </Form>
-    </div>
+  return isLoggedIn ? (
+    user.type === 'Admin' ? (
+      <div>
+        <Form onSubmit={createNew} className='create'>
+          <h3>Register new student</h3>
+          <Input
+            type='text'
+            name='fName'
+            placeholder='Enter first name'
+            value={fName}
+            onChange={(e) => setFName(e.target.value)}
+          />
+          <br />
+          <Input
+            type='text'
+            name='lName'
+            placeholder='Enter last name'
+            value={lName}
+            onChange={(e) => setLName(e.target.value)}
+          />
+          <br />
+          <Input
+            type='email'
+            name='email'
+            placeholder='Enter email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <br />
+          {type === 'student' && (
+            <>
+              <Input
+                type='number'
+                name='age'
+                placeholder='Enter age'
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+              <br />
+              <Input
+                type='number'
+                name='level'
+                placeholder='Enter level'
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+              />
+              <br />
+              <Input
+                type='text'
+                name='matricNo'
+                placeholder='Enter matric number'
+                value={matricNo}
+                onChange={(e) => setMatricNo(e.target.value)}
+              />
+              <br />
+            </>
+          )}
+          {departments.length > 0 && (
+            <>
+              <p>Choose department:</p>
+              <select
+                onChange={(e) => {
+                  setDepartmentId(
+                    e.target.options[e.target.selectedIndex].getAttribute('id')
+                  );
+                }}
+              >
+                {departments.map((department) => (
+                  <option key={department.id} id={department.id}>
+                    {department.name}
+                  </option>
+                ))}
+              </select>
+              <br />
+            </>
+          )}
+          <Input type='submit' name='create' />
+        </Form>
+      </div>
+    ) : (
+      <Navigate replace to={`/${user.type.toLowerCase()}-dashboard`} />
+    )
+  ) : (
+    <Navigate replace to='/login' />
   );
 }
 

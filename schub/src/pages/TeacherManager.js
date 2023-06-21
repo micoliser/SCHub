@@ -7,6 +7,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import DisplayTable from '../components/DisplayTable';
 import '../styles/manage.css';
+import LoadingPage from '../components/Loading';
 
 function TeacherManager({ loading }) {
   // auth context values
@@ -78,9 +79,7 @@ function TeacherManager({ loading }) {
   }
 
   return loading ? (
-    <div>
-      <h2>Loading...</h2>
-    </div>
+    <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Admin' ? (
       <section className='manage-teachers'>

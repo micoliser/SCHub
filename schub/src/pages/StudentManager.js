@@ -6,6 +6,7 @@ import UpdateForm from '../components/UpdateForm';
 import DisplayTable from '../components/DisplayTable';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import LoadingPage from '../components/Loading';
 import '../styles/manage.css';
 
 function StudentManager({ loading }) {
@@ -142,9 +143,7 @@ function StudentManager({ loading }) {
   }
 
   return loading ? (
-    <div>
-      <h2>Loading...</h2>
-    </div>
+    <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Admin' ? (
       <section className='manage-students'>

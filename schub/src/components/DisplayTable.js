@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { TailSpin } from 'react-loader-spinner';
 import axios from 'axios';
 import Button from './Button';
 import '../styles/table.css';
@@ -41,7 +42,21 @@ function DisplayTable({
     setDeleteId('');
   }
 
-  return (
+  return data.length === 0 ? (
+    <div className='loading'>
+      <TailSpin
+        height='80'
+        width='50'
+        color='#4fa94d'
+        ariaLabel='tail-spin-loading'
+        radius='1'
+        wrapperStyle={{}}
+        wrapperClass=''
+        visible={true}
+      />
+      <h4>Loading {type}s data</h4>
+    </div>
+  ) : (
     <table>
       <thead>
         <tr>

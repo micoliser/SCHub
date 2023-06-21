@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingPage from '../components/Loading';
 
 function TeacherDashboard({ loading }) {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -24,7 +25,6 @@ function TeacherDashboard({ loading }) {
       axios
         .get(`http://localhost:5000/api/teachers/${user.id}/courses`)
         .then((res) => {
-          console.log(res.data);
           setCourses(res.data);
         })
         .catch((err) => {
@@ -34,9 +34,7 @@ function TeacherDashboard({ loading }) {
   }, [user]);
 
   return loading ? (
-    <div>
-      <h2>Loading...</h2>
-    </div>
+    <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Teacher' ? (
       <section>

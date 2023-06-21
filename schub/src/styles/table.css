@@ -1,4 +1,13 @@
+.loading {
+    width: 30%;
+    margin: 10px auto;
+}
+
+.loading h4 {
+    margin-top: 20px;
+}
 table {
+    position: relative;
     width: 95%;
     margin: auto;
     text-align: left;

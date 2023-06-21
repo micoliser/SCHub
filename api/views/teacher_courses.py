@@ -8,8 +8,8 @@ from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
-        '/teachers/<teacher_id>/courses',
-        strict_slashes=False)
+    '/teachers/<teacher_id>/courses',
+    strict_slashes=False)
 def teacher_courses(teacher_id):
     """
         Configures GET method for the teacher courses route
@@ -18,5 +18,8 @@ def teacher_courses(teacher_id):
     teacher = storage.get('Teacher', teacher_id)
     if not teacher:
         abort(404)
-    list_courses = [course.to_dict() for course in teacher.courses]
+    with storage.session_scope() as session:
+        teacher = session.merge(teacher)
+        list_courses = [course.to_dict() for course in teacher.courses]
+
     return jsonify(list_courses)

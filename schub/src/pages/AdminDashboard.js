@@ -1,15 +1,14 @@
 import React, { useContext } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import LoadingPage from '../components/Loading';
 import '../styles/admin.css';
 
 function AdminDashboard({ loading }) {
   const { isLoggedIn, user } = useContext(AuthContext);
 
   return loading ? (
-    <div>
-      <h2>Loading...</h2>
-    </div>
+    <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Admin' ? (
       <section className='admin-dashboard'>

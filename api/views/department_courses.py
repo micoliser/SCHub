@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Courses route for database """
-from models.department import Department
+from models.course import Course
 from models import storage
 from api.views import app_views
 from flask import abort, jsonify, make_response, request
@@ -18,7 +18,9 @@ def courses(department_id):
 
     if request.method == 'GET':
         department = storage.get('Department', department_id)
-        list_courses = [course.to_dict() for course in department.courses]
+        with storage.session_scope() as session:
+            department = session.merge(department)
+            list_courses = [course.to_dict() for course in department.courses]
         return jsonify(list_courses)
     else:
         if not request.get_json():
@@ -34,7 +36,7 @@ def courses(department_id):
                           parameter))
 
         data = request.get_json()
-        instance = Department(**data)
+        instance = Course(**data)
         instance.department_id = department_id
         storage.new(instance)
         storage.save()
@@ -55,8 +57,10 @@ def course(department_id, course_id):
     if not department or not course:
         abort(404)
 
-    if course not in department.courses:
-        abort(404)
+    with storage.session_scope() as session:
+        department = session.merge(department)
+        if course not in department.courses:
+            abort(404)
 
     if request.method == 'GET':
         return jsonify(course.to_dict())
