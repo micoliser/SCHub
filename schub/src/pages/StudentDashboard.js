@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import Button from '../components/Button';
 
-function StudentDashboard ({ loading }) {
+function StudentDashboard({ loading }) {
   const { isLoggedIn, user } = useContext(AuthContext);
   const [department, setDepartment] = useState(null);
   const [allCourses, setAllCourses] = useState([]);
@@ -48,7 +48,7 @@ function StudentDashboard ({ loading }) {
     }
   }, [allCourses, user.current_level]);
 
-  function showAll () {
+  function showAll() {
     if (show) {
       setCourses(filteredCourses);
       setShow(false);
@@ -58,62 +58,62 @@ function StudentDashboard ({ loading }) {
     }
   }
 
-  return loading
-    ? (
-      <div>
-        <h2>Loading...</h2>
-      </div>
-      )
-    : isLoggedIn
-      ? (
-        <section>
-          <h1>Welcome {user.first_name}</h1>
-          <div>
+  return loading ? (
+    <div>
+      <h2>Loading...</h2>
+    </div>
+  ) : isLoggedIn ? (
+    user.type === 'Student' ? (
+      <section>
+        <h1>Welcome {user.first_name}</h1>
+        <div>
+          <p>
+            <span>Matric No: </span>
+            {user.matric_no}
+          </p>
+          <p>
+            <span>Full Name: </span>
+            {user.first_name + ' ' + user.last_name}
+          </p>
+          <p>
+            <span>Email: </span>
+            {user.email}
+          </p>
+          <p>
+            <span>Level: </span>
+            {user.current_level + '00'}
+          </p>
+          {department && (
             <p>
-              <span>Matric No: </span>
-              {user.matric_no}
+              <span>Department: </span>
+              {department.name}
             </p>
-            <p>
-              <span>Full Name: </span>
-              {user.first_name + ' ' + user.last_name}
-            </p>
-            <p>
-              <span>Email: </span>
-              {user.email}
-            </p>
-            <p>
-              <span>Level: </span>
-              {user.current_level + '00'}
-            </p>
-            {department && (
-              <p>
-                <span>Department: </span>
-                {department.name}
-              </p>
-            )}
-            {courses.length !== 0 && (
-              <>
-                <p>Courses: </p>
-                <ul>
-                  {courses.map((course) => (
-                    <li key={course.id}>
-                      {course.name} ({course.level}00L)
-                    </li>
-                  ))}
-                </ul>
-                <Button name='more-courses' onClick={showAll}>
-                  {show
-                    ? 'Show courses for current level'
-                    : 'Show courses for all levels'}
-                </Button>
-              </>
-            )}
-          </div>
-        </section>
-        )
-      : (
-        <Navigate replace to='/login' />
-        );
+          )}
+          {courses.length !== 0 && (
+            <>
+              <p>Courses: </p>
+              <ul>
+                {courses.map((course) => (
+                  <li key={course.id}>
+                    {course.name} ({course.level}00L)
+                  </li>
+                ))}
+              </ul>
+              <Button name='more-courses' onClick={showAll}>
+                {show
+                  ? 'Show courses for current level'
+                  : 'Show courses for all levels'}
+              </Button>
+            </>
+          )}
+        </div>
+      </section>
+    ) : (
+      <Navigate replace to={`/${user.type.toLowerCase()}-dashboard`} />
+    )
+  ) : (
+    <Navigate replace to='/login' />
+  );
 }
 
 export default StudentDashboard;

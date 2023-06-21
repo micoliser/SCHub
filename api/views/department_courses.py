@@ -8,9 +8,9 @@ from flask import abort, jsonify, make_response, request
 
 
 @app_views.route(
-        '/departments/<department_id>/courses',
-        methods=['GET', 'POST'],
-        strict_slashes=False)
+    '/departments/<department_id>/courses',
+    methods=['GET', 'POST'],
+    strict_slashes=False)
 def courses(department_id):
     """
         Configures GET and POST methods for the courses route
@@ -31,7 +31,7 @@ def courses(department_id):
             if parameter not in request.get_json():
                 abort(400,
                       description="Missing required parameter: {}".format(
-                                                                   parameter))
+                          parameter))
 
         data = request.get_json()
         instance = Department(**data)
@@ -42,9 +42,9 @@ def courses(department_id):
 
 
 @app_views.route(
-        '/departments/<department_id>/courses/<course_id>',
-        methods=['GET', 'PUT', 'DELETE'],
-        strict_slashes=False)
+    '/departments/<department_id>/courses/<course_id>',
+    methods=['GET', 'PUT', 'DELETE'],
+    strict_slashes=False)
 def course(department_id, course_id):
     """
         Configures GET, PUT and DELETE for the course route

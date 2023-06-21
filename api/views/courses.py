@@ -30,10 +30,11 @@ def allCourses():
     else:
         if not request.get_json():
             abort(400, description="Not a valid JSON dict")
-        required = ['first_name',
-                    'last_name',
-                    'email',
-                    'password']
+        required = ['name',
+                    'level',
+                    'course_id',
+                    'teacher_id',
+                    'department_id']
         for parameter in required:
             if parameter not in request.get_json():
                 abort(400,
@@ -85,7 +86,7 @@ def oneCourse(course_id):
     '/courses/<course_id>/teacher',
     methods=['GET'],
     strict_slashes=False)
-def courseTeacher(course_id):
+def course_teacher(course_id):
     """
         Configures GET and POST methods for the course/<id>/courses route
     """
