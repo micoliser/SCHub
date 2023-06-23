@@ -20,19 +20,33 @@ def allCourses():
         level = request.args.get('level')
         all_courses = storage.all('Course').values()
         if level is None:
-            list_courses = [course.to_dict() for course in all_courses]
+            list_courses = []
+            for course in all_courses:
+                course_dict = course.to_dict()
+                department = storage.get('Department', course.department_id)
+                teacher = storage.get('Teacher', course.teacher_id)
+                course_dict['department'] = department.name
+                course_dict['teacher'] = teacher.first_name + \
+                    ' ' + teacher.last_name
+                list_courses.append(course_dict)
         else:
             list_courses = []
             for course in all_courses:
-                if course.level == int(level):
-                    list_courses.append(course.to_dict())
+                if course.current_level == int(level):
+                    course_dict = course.to_dict()
+                    department = storage.get('Department',
+                                             course.department_id)
+                    teacher = storage.get('Teacher', course.teacher_id)
+                    course_dict['department'] = department.name
+                    course_dict['teacher'] = teacher.first_name + \
+                        ' ' + teacher.last_name
+                    list_courses.append(course_dict)
         return jsonify(list_courses)
     else:
         if not request.get_json():
             abort(400, description="Not a valid JSON dict")
         required = ['name',
                     'level',
-                    'course_id',
                     'teacher_id',
                     'department_id']
         for parameter in required:
@@ -62,12 +76,17 @@ def oneCourse(course_id):
         abort(404)
 
     if request.method == 'GET':
-        return jsonify(course.to_dict())
+        course_dict = course.to_dict()
+        department = storage.get('Department', course.department_id)
+        teacher = storage.get('Teacher', course.teacher_id)
+        course_dict['department'] = department.name
+        course_dict['teacher'] = teacher.first_name + ' ' + teacher.last_name
+        return jsonify(course_dict)
     elif request.method == 'PUT':
         if not request.get_json():
             abort(400, description="Not a valid JSON")
 
-        ignore = ['id', 'created_at']
+        ignore = ['id', 'created_at', 'department_id']
         data = request.get_json()
         for key, value in data.items():
             if key not in ignore:

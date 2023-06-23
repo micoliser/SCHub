@@ -146,14 +146,14 @@ function StudentManager({ loading }) {
     <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Admin' ? (
-      <section className='manage-students'>
+      <section className='manage'>
         {updating ? (
           <UpdateForm
             type='student'
             name={updateStudent.name}
             id={updateStudent.id}
             setUpdating={setUpdating}
-            setUpdateStudent={setUpdateStudent}
+            setUpdate={setUpdateStudent}
           />
         ) : (
           <>
@@ -205,6 +205,8 @@ function StudentManager({ loading }) {
               allData={allStudents}
               setAllData={setAllStudents}
               handleUpdate={handleUpdate}
+              searching={searching}
+              searchedValue={searchedValue}
             />
             {students.length < allStudents.length &&
               !filteringDepartment.active &&

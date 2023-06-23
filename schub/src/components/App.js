@@ -11,6 +11,7 @@ import TeacherDashboard from '../pages/TeacherDashboard';
 import NotFound from '../pages/NotFound';
 import StudentManager from '../pages/StudentManager';
 import TeacherManager from '../pages/TeacherManager';
+import CourseManager from '../pages/CourseManager';
 import CreateNew from '../pages/Create';
 
 function App() {
@@ -65,6 +66,14 @@ function App() {
           <Route
             path='admin-dashboard/teachers/new'
             element={<CreateNew type='teacher' />}
+          />
+          <Route
+            path='admin-dashboard/courses'
+            element={<CourseManager loading={isLoading} />}
+          />
+          <Route
+            path='admin-dashboard/courses/new'
+            element={<CreateNew type='course' />}
           />
           <Route path='*' element={<NotFound />} />
         </Route>

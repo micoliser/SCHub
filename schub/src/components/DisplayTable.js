@@ -11,6 +11,8 @@ function DisplayTable({
   allData,
   setAllData,
   handleUpdate,
+  searching,
+  searchedValue,
 }) {
   const [deleting, setDeleting] = useState(false);
   const [deleteId, setDeleteId] = useState('');
@@ -22,9 +24,9 @@ function DisplayTable({
 
   function doDelete(e) {
     const id = deleteId;
-    setAllData(allData.filter((person) => person.id !== id));
-    if (type === 'teacher') {
-      setData(data.filter((person) => person.id !== id));
+    setAllData(allData.filter((dt) => dt.id !== id));
+    if (type !== 'student') {
+      setData(data.filter((dt) => dt.id !== id));
     }
     axios
       .delete(`http://localhost:5000/api/${type}s/${id}`, {
@@ -44,46 +46,66 @@ function DisplayTable({
 
   return data.length === 0 ? (
     <div className='loading'>
-      <TailSpin
-        height='80'
-        width='50'
-        color='#4fa94d'
-        ariaLabel='tail-spin-loading'
-        radius='1'
-        wrapperStyle={{}}
-        wrapperClass=''
-        visible={true}
-      />
-      <h4>Loading {type}s data</h4>
+      {searching ? (
+        <p>No results found for {searchedValue}</p>
+      ) : (
+        <>
+          <TailSpin
+            height='80'
+            width='50'
+            color='#4fa94d'
+            ariaLabel='tail-spin-loading'
+            radius='1'
+            wrapperStyle={{}}
+            wrapperClass=''
+            visible={true}
+          />
+          <h4>Loading {type}s data</h4>
+        </>
+      )}
     </div>
   ) : (
     <table>
       <thead>
         <tr>
-          <th>Full Name</th>
+          <th>
+            {type === 'student' || type === 'teacher' ? 'Full Name' : 'Name'}
+          </th>
           {type === 'student' && <th>Matric No</th>}
-          <th>Email</th>
-          <th>Department</th>
-          {type === 'student' && <th>Level</th>}
+          {(type === 'student' || type === 'teacher') && <th>Email</th>}
+          {type !== 'department' && <th>Department</th>}
+          {(type === 'student' || type === 'course') && <th>Level</th>}
+          {type === 'course' && <th>Teacher</th>}
           <th colSpan={2}>Actions</th>
         </tr>
       </thead>
       <tbody>
-        {data.map((person) => {
+        {data.map((dt) => {
           return (
-            <tr key={person.id}>
-              <td>{person.first_name + ' ' + person.last_name}</td>
-              {type === 'student' && <td>{person.matric_no}</td>}
-              <td>{person.email}</td>
-              <td>{person.department}</td>
-              {type === 'student' && <td>{person.current_level + '00'}</td>}
+            <tr key={dt.id}>
+              <td>
+                {type === 'student' || type === 'teacher'
+                  ? dt.first_name + ' ' + dt.last_name
+                  : dt.name}
+              </td>
+              {type === 'student' && <td>{dt.matric_no}</td>}
+              {(type === 'student' || type === 'teacher') && (
+                <td>{dt.email}</td>
+              )}
+              {type !== 'department' && <td>{dt.department}</td>}
+              {type === 'student' && <td>{dt.current_level + '00'}</td>}
+              {type === 'course' && <td>{dt.level + '00'}</td>}
+              {type === 'course' && <td>{dt.teacher}</td>}
               <td>
                 <Button
-                  name={person.id}
+                  name={dt.id}
                   onClick={() =>
                     handleUpdate(
-                      person.id,
-                      `${person.first_name} ${person.last_name}`
+                      dt.id,
+                      type === 'student' || type === 'teacher'
+                        ? `${dt.first_name} ${dt.last_name}`
+                        : dt.name,
+                      type === 'course' && dt.department
                     )
                   }
                   className='update'
@@ -92,9 +114,15 @@ function DisplayTable({
                 </Button>
               </td>
               <td>
-                {deleting && deleteId === person.id ? (
+                {deleting && deleteId === dt.id ? (
                   <div className='deleting'>
-                    <p>Are you sure you want to delete {person.first_name}?</p>
+                    <p>
+                      Are you sure you want to delete
+                      {type === 'student' || type === 'teacher'
+                        ? `${dt.first_name} ${dt.last_name}`
+                        : dt.name}
+                      ?
+                    </p>
                     <Button
                       name='back'
                       onClick={backFromDelete}
@@ -108,7 +136,7 @@ function DisplayTable({
                   </div>
                 ) : (
                   <Button
-                    name={person.id}
+                    name={dt.id}
                     onClick={handleDelete}
                     className='delete'
                   >

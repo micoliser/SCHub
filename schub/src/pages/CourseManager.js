@@ -9,28 +9,41 @@ import DisplayTable from '../components/DisplayTable';
 import '../styles/manage.css';
 import LoadingPage from '../components/Loading';
 
-function TeacherManager({ loading }) {
+function CourseManager({ loading }) {
   // auth context values
   const { isLoggedIn, user } = useContext(AuthContext);
 
-  const [allTeachers, setAllTeachers] = useState([]);
-  const [teachers, setTeachers] = useState([]);
+  const [allCourses, setAllCourses] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [departments, setDepartments] = useState([]);
 
+  const [filteringLevel, setFilteringLevel] = useState({
+    active: false,
+    value: '',
+  });
+  const [filteringDepartment, setFilteringDepartment] = useState({
+    active: false,
+    value: '',
+  });
+
   const [updating, setUpdating] = useState(false);
-  const [updateTeacher, setUpdateTeacher] = useState({ id: '', name: '' });
+  const [updateCourse, setUpdateCourse] = useState({
+    id: '',
+    name: '',
+    department: '',
+  });
 
   const [searching, setSearching] = useState(false);
   const [searchingValue, setSearchingValue] = useState('');
   const [searchedValue, setSearchedValue] = useState('');
 
   useEffect(() => {
-    // fetch all teachers
+    // fetch all courses
     axios
-      .get('http://localhost:5000/api/teachers', { withCredentials: true })
+      .get('http://localhost:5000/api/courses', { withCredentials: true })
       .then((res) => {
-        setAllTeachers(res.data);
-        setTeachers(res.data);
+        setAllCourses(res.data);
+        setCourses(res.data);
       })
       .catch((err) => {
         console.log('Error:', err);
@@ -52,10 +65,9 @@ function TeacherManager({ loading }) {
       return;
     }
     setSearching(true);
-    setTeachers(
-      allTeachers.filter((teacher) => {
-        const fullName = teacher.first_name + ' ' + teacher.last_name;
-        return fullName.toLowerCase().includes(searchingValue.toLowerCase());
+    setCourses(
+      allCourses.filter((course) => {
+        return course.name.toLowerCase().includes(searchingValue.toLowerCase());
       })
     );
     setSearchedValue(searchingValue);
@@ -65,16 +77,44 @@ function TeacherManager({ loading }) {
   function handleFilter(e) {
     setSearching(false);
     const value = e.target.value;
-    setTeachers(allTeachers.filter((teacher) => teacher.department === value));
+    if (e.target.name === 'filter-level') {
+      if (filteringDepartment.active) {
+        setCourses(
+          allCourses.filter(
+            (course) =>
+              course.level === Number(value) / 100 &&
+              course.department === filteringDepartment.value
+          )
+        );
+      } else {
+        setCourses(
+          allCourses.filter((course) => course.level === Number(value) / 100)
+        );
+      }
+      setFilteringLevel({ active: true, value: value });
+    } else {
+      if (filteringLevel.active) {
+        setCourses(
+          allCourses.filter(
+            (course) =>
+              course.department === value &&
+              course.level === filteringLevel.value / 100
+          )
+        );
+      } else {
+        setCourses(allCourses.filter((course) => course.department === value));
+      }
+      setFilteringDepartment({ active: true, value: value });
+    }
   }
 
-  function handleUpdate(id, name) {
+  function handleUpdate(id, name, department) {
     setUpdating(true);
-    setUpdateTeacher({ id: id, name: name });
+    setUpdateCourse({ id: id, name: name, department: department });
   }
 
   function showAll() {
-    setTeachers(allTeachers);
+    setCourses(allCourses);
     setSearching(false);
   }
 
@@ -85,31 +125,41 @@ function TeacherManager({ loading }) {
       <section className='manage'>
         {updating ? (
           <UpdateForm
-            type='teacher'
-            name={updateTeacher.name}
-            id={updateTeacher.id}
+            type='course'
+            name={updateCourse.name}
+            id={updateCourse.id}
+            department={updateCourse.department}
             setUpdating={setUpdating}
-            setUpdate={setUpdateTeacher}
+            setUpdate={setUpdateCourse}
           />
         ) : (
           <>
-            <h1>Teachers</h1>
-            <Link to='/admin-dashboard/teachers/new'>Register New Teacher</Link>
+            <h1>Courses</h1>
+            <Link to='/admin-dashboard/courses/new'>Register New Course</Link>
             <div className='search'>
               <Input
                 type='text'
                 name='search'
-                placeholder='Search teacher by name'
+                placeholder='Search course by name'
                 value={searchingValue}
                 onChange={(e) => setSearchingValue(e.target.value)}
               />
-              <Button name='search-teachers' onClick={handleSearch}>
+              <Button name='search-courses' onClick={handleSearch}>
                 Search
               </Button>
             </div>
             <div className='filter'>
               <h3>Filter</h3>
               <div className='filters'>
+                <div className='level'>
+                  <p>By Level</p>
+                  <select name='filter-level' onChange={handleFilter}>
+                    <option>100</option>
+                    <option>200</option>
+                    <option>300</option>
+                    <option>400</option>
+                  </select>
+                </div>
                 <div className='department'>
                   <p>By Department</p>
                   <select name='filter-departments' onChange={handleFilter}>
@@ -127,11 +177,11 @@ function TeacherManager({ loading }) {
             </div>
             {searching && <p>Showing search results for {searchedValue}</p>}
             <DisplayTable
-              type='teacher'
-              data={teachers}
-              setData={setTeachers}
-              allData={allTeachers}
-              setAllData={setAllTeachers}
+              type='course'
+              data={courses}
+              setData={setCourses}
+              allData={allCourses}
+              setAllData={setAllCourses}
               handleUpdate={handleUpdate}
               searching={searching}
               searchedValue={searchedValue}
@@ -147,4 +197,4 @@ function TeacherManager({ loading }) {
   );
 }
 
-export default TeacherManager;
+export default CourseManager;
