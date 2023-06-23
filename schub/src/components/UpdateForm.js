@@ -106,12 +106,12 @@ function UpdateForm({ type, name, id, department, setUpdating, setUpdate }) {
           <br />
         </>
       )}
-      {type === 'course' && (
+      {(type === 'course' || type === 'department') && (
         <>
           <Input
             type='text'
             name='cName'
-            placeholder='Enter Course Name'
+            placeholder={`Enter ${type} name`}
             value={cName}
             onChange={(e) => setCName(e.target.value)}
           />

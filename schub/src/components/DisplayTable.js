@@ -114,35 +114,40 @@ function DisplayTable({
                 </Button>
               </td>
               <td>
-                {deleting && deleteId === dt.id ? (
-                  <div className='deleting'>
-                    <p>
-                      Are you sure you want to delete
-                      {type === 'student' || type === 'teacher'
-                        ? `${dt.first_name} ${dt.last_name}`
-                        : dt.name}
-                      ?
-                    </p>
+                {type !== 'department' &&
+                  (deleting && deleteId === dt.id ? (
+                    <div className='deleting'>
+                      <p>
+                        Are you sure you want to delete
+                        {type === 'student' || type === 'teacher'
+                          ? `${dt.first_name} ${dt.last_name}`
+                          : dt.name}
+                        ?
+                      </p>
+                      <Button
+                        name='back'
+                        onClick={backFromDelete}
+                        className='back'
+                      >
+                        No, Go Back
+                      </Button>
+                      <Button
+                        name='delete'
+                        onClick={doDelete}
+                        className='delete'
+                      >
+                        Yes, Delete
+                      </Button>
+                    </div>
+                  ) : (
                     <Button
-                      name='back'
-                      onClick={backFromDelete}
-                      className='back'
+                      name={dt.id}
+                      onClick={handleDelete}
+                      className='delete'
                     >
-                      No, Go Back
+                      Delete
                     </Button>
-                    <Button name='delete' onClick={doDelete} className='delete'>
-                      Yes, Delete
-                    </Button>
-                  </div>
-                ) : (
-                  <Button
-                    name={dt.id}
-                    onClick={handleDelete}
-                    className='delete'
-                  >
-                    Delete
-                  </Button>
-                )}
+                  ))}
               </td>
             </tr>
           );
