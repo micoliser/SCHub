@@ -38,6 +38,9 @@ function StudentManager({ loading }) {
   const [updating, setUpdating] = useState(false);
   const [updateStudent, setUpdateStudent] = useState({ id: '', name: '' });
 
+  // states for search error
+  const [searchError, setSearchError] = useState({ active: false });
+
   useEffect(() => {
     // fetch all students
     axios
@@ -75,6 +78,10 @@ function StudentManager({ loading }) {
 
   function handleFilter(e) {
     setSearching(false);
+    setSearchError({ active: false });
+    setSearchedValue('');
+    setSearchingValue('');
+
     const value = e.target.value;
     if (e.target.name === 'filter-level') {
       if (filteringDepartment.active) {
@@ -112,9 +119,6 @@ function StudentManager({ loading }) {
   }
 
   function handleSearch() {
-    if (searchingValue.length < 3) {
-      return;
-    }
     setSearching(true);
     setStudents(
       allStudents.filter((student) => {
@@ -135,6 +139,9 @@ function StudentManager({ loading }) {
     setFilteringLevel({ active: false, value: '' });
     setFilteringDepartment({ active: false, value: '' });
     setSearching(false);
+    setSearchError({ active: false });
+    setSearchedValue('');
+    setSearchingValue('');
   }
 
   function handleUpdate(id, name) {
@@ -165,7 +172,18 @@ function StudentManager({ loading }) {
                 name='search'
                 placeholder='Search student by name or matric number'
                 value={searchingValue}
-                onChange={(e) => setSearchingValue(e.target.value)}
+                onChange={(e) => {
+                  setSearchingValue(e.target.value);
+                  if (searchingValue.length < 3) {
+                    setSearchError({
+                      active: true,
+                      message: 'search word must be 3 characters or more',
+                    });
+                  } else {
+                    setSearchError({ active: false });
+                  }
+                }}
+                error={searchError}
               />
               <Button name='search-students' onClick={handleSearch}>
                 Search

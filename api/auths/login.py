@@ -48,7 +48,7 @@ def login():
         response.set_cookie('token', token, httponly=False)
         return response
     else:
-        return make_response(jsonify({'message': 'user not found'}), 401)
+        return make_response(jsonify({'message': 'user not found'}), 404)
 
 
 @auth.route('/logout')

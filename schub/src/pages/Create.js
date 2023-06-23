@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import validator from 'validator';
 import Form from '../components/Form';
 import Input from '../components/Input';
 import { AuthContext } from '../contexts/AuthContext';
@@ -14,12 +15,24 @@ function CreateNew({ type }) {
   const [lName, setLName] = useState('');
   const [name, setName] = useState('');
   const [teachers, setTeachers] = useState([]);
-  const [teacherId, setTeacherId] = useState('');
+  const [teacherId, setTeacherId] = useState('None');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
-  const [level, setLevel] = useState('');
+  const [level, setLevel] = useState('None');
   const [matricNo, setMatricNo] = useState('');
-  const [departmentId, setDepartmentId] = useState('');
+  const [departmentId, setDepartmentId] = useState('None');
+
+  // states for handling error
+  const [error, setError] = useState(false);
+  const [fNameError, setFNameError] = useState({ active: false });
+  const [lNameError, setLNameError] = useState({ active: false });
+  const [nameError, setNameError] = useState({ active: false });
+  const [emailError, setEmailError] = useState({ active: false });
+  const [ageError, setAgeError] = useState({ active: false });
+  const [matricError, setMatricError] = useState({ active: false });
+  const [levelError, setLevelError] = useState({ active: false });
+  const [departmentError, setDepartmentError] = useState({ active: false });
+  const [teacherError, setTeacherError] = useState({ active: false });
 
   useEffect(() => {
     if (type !== 'department') {
@@ -38,24 +51,101 @@ function CreateNew({ type }) {
   function createNew(e) {
     e.preventDefault();
     const data = {};
-    if (fName) data.first_name = fName;
-    if (lName) data.last_name = lName;
-    if (name) data.name = name;
-    if (teacherId) data.teacher_id = teacherId;
-    console.log(teacherId);
-    if (email) data.email = email;
-    if (age) data.age = age;
-    if (level) {
-      if (type === 'student') {
+
+    // Error checking for empty fields
+    if (type === 'student' || type === 'teacher') {
+      if (fName.length === 0) {
+        setFNameError({ active: true, message: 'First name cannot be blank' });
+        return;
+      } else {
+        setFNameError({ active: false });
+        data.first_name = fName;
+      }
+
+      if (lName.length === 0) {
+        setLNameError({ active: true, message: 'Last name cannot be blank' });
+        return;
+      } else {
+        setLNameError({ active: false });
+        data.last_name = lName;
+      }
+
+      if (email.length === 0) {
+        setEmailError({ active: true, message: 'Email cannot be blank' });
+        return;
+      } else {
+        setEmailError({ active: false });
+        data.email = email;
+      }
+    }
+
+    if (type === 'student') {
+      if (age.length === 0) {
+        setAgeError({ active: true, message: 'Age cannot be blank' });
+        return;
+      } else {
+        setAgeError({ active: false });
+        data.age = age;
+      }
+
+      if (matricNo.length === 0) {
+        setMatricError({ active: true, message: 'Matric no cannot be blank' });
+        return;
+      } else {
+        setMatricError({ active: false });
+        data.matric_no = matricNo;
+      }
+
+      if (level === 'None') {
+        setLevelError({ active: true, message: 'Please select a level' });
+        return;
+      } else {
+        setLevelError({ active: false });
         data.start_level = level;
         data.current_level = level;
+      }
+    }
+
+    if (type === 'course' || type === 'department') {
+      if (name.length === 0) {
+        setNameError({ active: true, message: 'Name cannot be blank' });
+        return;
       } else {
+        setNameError({ active: false });
+        data.name = name;
+      }
+    }
+
+    if (type !== 'department') {
+      if (departmentId === 'None') {
+        setDepartmentError({
+          active: true,
+          message: 'Please select a department',
+        });
+        return;
+      } else {
+        setDepartmentError({ active: false });
+        data.department_id = departmentId;
+      }
+    }
+
+    if (type === 'course') {
+      if (teacherId === 'None') {
+        setTeacherError({ active: true, message: 'Please select a teacher' });
+        return;
+      } else {
+        setTeacherError({ active: false });
+        data.teacher_id = teacherId;
+      }
+
+      if (level === 'None') {
+        setLevelError({ active: true, message: 'Please select a level' });
+        return;
+      } else {
+        setLevelError({ active: false });
         data.level = level;
       }
     }
-    if (departmentId) data.department_id = departmentId;
-
-    console.log(data);
 
     axios
       .post(`http://localhost:5000/api/${type}s`, data, {
@@ -111,7 +201,20 @@ function CreateNew({ type }) {
                 name='fName'
                 placeholder='Enter first name'
                 value={fName}
-                onChange={(e) => setFName(e.target.value)}
+                onChange={(e) => {
+                  setFName(e.target.value);
+                  if (!validator.isAlpha(fName)) {
+                    setError(true);
+                    setFNameError({
+                      active: true,
+                      message: 'First name must contain only letters',
+                    });
+                  } else {
+                    setError(false);
+                    setFNameError({ active: false });
+                  }
+                }}
+                error={fNameError}
               />
               <br />
               <Input
@@ -119,7 +222,20 @@ function CreateNew({ type }) {
                 name='lName'
                 placeholder='Enter last name'
                 value={lName}
-                onChange={(e) => setLName(e.target.value)}
+                onChange={(e) => {
+                  setLName(e.target.value);
+                  if (!validator.isAlpha(lName)) {
+                    setError(true);
+                    setLNameError({
+                      active: true,
+                      message: 'Last name must contain only letters',
+                    });
+                  } else {
+                    setError(false);
+                    setLNameError({ active: false });
+                  }
+                }}
+                error={lNameError}
               />
               <br />
               <Input
@@ -127,7 +243,20 @@ function CreateNew({ type }) {
                 name='email'
                 placeholder='Enter email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (!validator.isEmail(email)) {
+                    setError(true);
+                    setEmailError({
+                      active: true,
+                      message: 'Invalid email address',
+                    });
+                  } else {
+                    setError(false);
+                    setEmailError({ active: false });
+                  }
+                }}
+                error={emailError}
               />
               <br />
             </>
@@ -140,6 +269,7 @@ function CreateNew({ type }) {
                 placeholder='Enter name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                error={nameError}
               />
               <br />
             </>
@@ -152,6 +282,7 @@ function CreateNew({ type }) {
                 placeholder='Enter age'
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
+                error={ageError}
               />
               <br />
               <Input
@@ -160,6 +291,7 @@ function CreateNew({ type }) {
                 placeholder='Enter matric number'
                 value={matricNo}
                 onChange={(e) => setMatricNo(e.target.value)}
+                error={matricError}
               />
               <br />
             </>
@@ -168,12 +300,27 @@ function CreateNew({ type }) {
             <>
               <p>Choose department:</p>
               <select onChange={handleDepartmentChange}>
+                <option id='None'>None</option>
                 {departments.map((department) => (
                   <option key={department.id} id={department.id}>
                     {department.name}
                   </option>
                 ))}
               </select>
+              {departmentError.active && (
+                <>
+                  <br />
+                  <p
+                    style={{
+                      color: 'red',
+                      textAlign: 'center',
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    {departmentError.message}
+                  </p>
+                </>
+              )}
               <br />
             </>
           )}
@@ -181,11 +328,26 @@ function CreateNew({ type }) {
             <>
               <p>Level</p>
               <select onChange={(e) => setLevel(e.target.value)}>
+                <option>None</option>
                 <option>100</option>
                 <option>200</option>
                 <option>300</option>
                 <option>400</option>
               </select>
+              {levelError.active && (
+                <>
+                  <br />
+                  <p
+                    style={{
+                      color: 'red',
+                      textAlign: 'center',
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    {levelError.message}
+                  </p>
+                </>
+              )}
               <br />
             </>
           )}
@@ -201,16 +363,38 @@ function CreateNew({ type }) {
                   );
                 }}
               >
+                <option name='None'>None</option>
                 {teachers.map((teacher) => (
                   <option key={teacher.id} name={teacher.id}>
                     {teacher.first_name + ' ' + teacher.last_name}
                   </option>
                 ))}
               </select>
+              {teacherError.active && (
+                <>
+                  <br />
+                  <p
+                    style={{
+                      color: 'red',
+                      textAlign: 'center',
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    {teacherError.message}
+                  </p>
+                </>
+              )}
               <br />
             </>
           )}
-          <Input type='submit' name='create' />
+          <Input
+            type='submit'
+            name='create'
+            value='Register'
+            error={{ active: false }}
+            disabled={error}
+            id={error ? 'disabled' : ''}
+          />
         </Form>
       </div>
     ) : (

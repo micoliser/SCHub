@@ -24,6 +24,9 @@ function TeacherManager({ loading }) {
   const [searchingValue, setSearchingValue] = useState('');
   const [searchedValue, setSearchedValue] = useState('');
 
+  // states for search error
+  const [searchError, setSearchError] = useState({ active: false });
+
   useEffect(() => {
     // fetch all teachers
     axios
@@ -64,6 +67,10 @@ function TeacherManager({ loading }) {
 
   function handleFilter(e) {
     setSearching(false);
+    setSearchError({ active: false });
+    setSearchedValue('');
+    setSearchingValue('');
+
     const value = e.target.value;
     setTeachers(allTeachers.filter((teacher) => teacher.department === value));
   }
@@ -76,6 +83,9 @@ function TeacherManager({ loading }) {
   function showAll() {
     setTeachers(allTeachers);
     setSearching(false);
+    setSearchError({ active: false });
+    setSearchedValue('');
+    setSearchingValue('');
   }
 
   return loading ? (
@@ -101,7 +111,18 @@ function TeacherManager({ loading }) {
                 name='search'
                 placeholder='Search teacher by name'
                 value={searchingValue}
-                onChange={(e) => setSearchingValue(e.target.value)}
+                onChange={(e) => {
+                  setSearchingValue(e.target.value);
+                  if (searchingValue.length < 3) {
+                    setSearchError({
+                      active: true,
+                      message: 'search word must be 3 characters or more',
+                    });
+                  } else {
+                    setSearchError({ active: false });
+                  }
+                }}
+                error={searchError}
               />
               <Button name='search-teachers' onClick={handleSearch}>
                 Search

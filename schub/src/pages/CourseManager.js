@@ -37,6 +37,9 @@ function CourseManager({ loading }) {
   const [searchingValue, setSearchingValue] = useState('');
   const [searchedValue, setSearchedValue] = useState('');
 
+  // states for search error
+  const [searchError, setSearchError] = useState({ active: false });
+
   useEffect(() => {
     // fetch all courses
     axios
@@ -76,6 +79,10 @@ function CourseManager({ loading }) {
 
   function handleFilter(e) {
     setSearching(false);
+    setSearchError({ active: false });
+    setSearchedValue('');
+    setSearchingValue('');
+
     const value = e.target.value;
     if (e.target.name === 'filter-level') {
       if (filteringDepartment.active) {
@@ -116,6 +123,9 @@ function CourseManager({ loading }) {
   function showAll() {
     setCourses(allCourses);
     setSearching(false);
+    setSearchError({ active: false });
+    setSearchedValue('');
+    setSearchingValue('');
   }
 
   return loading ? (
@@ -142,7 +152,18 @@ function CourseManager({ loading }) {
                 name='search'
                 placeholder='Search course by name'
                 value={searchingValue}
-                onChange={(e) => setSearchingValue(e.target.value)}
+                onChange={(e) => {
+                  setSearchingValue(e.target.value);
+                  if (searchingValue.length < 3) {
+                    setSearchError({
+                      active: true,
+                      message: 'search word must be 3 characters or more',
+                    });
+                  } else {
+                    setSearchError({ active: false });
+                  }
+                }}
+                error={searchError}
               />
               <Button name='search-courses' onClick={handleSearch}>
                 Search

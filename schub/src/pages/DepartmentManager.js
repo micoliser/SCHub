@@ -26,6 +26,9 @@ function DepartmentManager({ loading }) {
   const [searchingValue, setSearchingValue] = useState('');
   const [searchedValue, setSearchedValue] = useState('');
 
+  // states for search error
+  const [searchError, setSearchError] = useState({ active: false });
+
   useEffect(() => {
     // fetch all departments
     axios
@@ -63,6 +66,9 @@ function DepartmentManager({ loading }) {
   function showAll() {
     setDepartments(allDepartments);
     setSearching(false);
+    setSearchError({ active: false });
+    setSearchedValue('');
+    setSearchingValue('');
   }
 
   return loading ? (
@@ -90,7 +96,18 @@ function DepartmentManager({ loading }) {
                 name='search'
                 placeholder='Search department by name'
                 value={searchingValue}
-                onChange={(e) => setSearchingValue(e.target.value)}
+                onChange={(e) => {
+                  setSearchingValue(e.target.value);
+                  if (searchingValue.length < 3) {
+                    setSearchError({
+                      active: true,
+                      message: 'search word must be 3 characters or more',
+                    });
+                  } else {
+                    setSearchError({ active: false });
+                  }
+                }}
+                error={searchError}
               />
               <Button name='search-departments' onClick={handleSearch}>
                 Search

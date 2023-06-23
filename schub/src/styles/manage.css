@@ -20,11 +20,18 @@ h1 {
 
 .search {
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
     height: 40px;
     width: 50%;
     margin: 10px auto;
+}
+
+.search p {
+    position: absolute;
+    top: 100%;
+    left: 7%;
 }
 
 .search input, .search button  {

@@ -13,7 +13,8 @@
     flex-wrap: wrap;
 }
 
-.login-container button, .login-form input {
+.login-container button,
+.login-form input {
     display: inline-block;
     font-size: 1rem;
     border-radius: 30px;
