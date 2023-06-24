@@ -18,10 +18,18 @@ app.config['SECRET_KEY'] = 'pretty_key121'
 
 login_manager = LoginManager(app)
 
+CORS(
+        auth,
+        resources={r"/*": {"origins": "*"}},
+        supports_credentials=True)
+
 app.register_blueprint(app_views)
 app.register_blueprint(auth)
 
-cors = CORS(app, supports_credentials=True)
+cors = CORS(
+        app,
+        resources={r"/*": {"origins": "*"}},
+        supports_credentials=True)
 
 
 @login_manager.user_loader

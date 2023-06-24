@@ -62,6 +62,11 @@ class Storage:
 
     @contextmanager
     def session_scope(self):
+        """
+            Creates a session, and tearsDown after control
+            is transferred back
+        """
+
         session = self.Session()
         try:
             yield session

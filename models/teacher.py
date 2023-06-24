@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ This module contains the teacher class """
+
 from models.base import Base, BaseModel
 from models.person import Person
 from sqlalchemy import Column, String, ForeignKey
