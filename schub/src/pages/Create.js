@@ -22,8 +22,9 @@ function CreateNew({ type }) {
   const [matricNo, setMatricNo] = useState('');
   const [departmentId, setDepartmentId] = useState('None');
 
-  // states for handling error
+  // states for handling errors
   const [error, setError] = useState(false);
+  const [postError, setPostError] = useState({ active: false });
   const [fNameError, setFNameError] = useState({ active: false });
   const [lNameError, setLNameError] = useState({ active: false });
   const [nameError, setNameError] = useState({ active: false });
@@ -32,7 +33,13 @@ function CreateNew({ type }) {
   const [matricError, setMatricError] = useState({ active: false });
   const [levelError, setLevelError] = useState({ active: false });
   const [departmentError, setDepartmentError] = useState({ active: false });
+  const [departmentFetchError, setDepartmentFetchError] = useState({
+    active: false,
+  });
   const [teacherError, setTeacherError] = useState({ active: false });
+  const [teacherFetchError, setTeacherFetchError] = useState({
+    active: false,
+  });
 
   useEffect(() => {
     if (type !== 'department') {
@@ -43,13 +50,19 @@ function CreateNew({ type }) {
           setDepartments(res.data);
         })
         .catch((err) => {
-          console.log(err);
+          setDepartmentFetchError({
+            active: true,
+            error:
+              'An error occured while fetching department details, Please try again',
+          });
         });
     }
   }, [type]);
 
   function createNew(e) {
     e.preventDefault();
+    setPostError({ active: false });
+
     const data = {};
 
     // Error checking for empty fields
@@ -152,7 +165,12 @@ function CreateNew({ type }) {
         withCredentials: true,
       })
       .then((res) => console.log(res))
-      .catch((err) => console.log('Error:', err));
+      .catch((err) => {
+        setPostError({
+          active: true,
+          message: 'An error occured. Please try again',
+        });
+      });
 
     clearForm();
   }
@@ -184,7 +202,11 @@ function CreateNew({ type }) {
           );
         })
         .catch((err) => {
-          console.log(err);
+          setTeacherFetchError({
+            active: true,
+            message:
+              'An error occured while fetching teacher details. Please try again',
+          });
         });
     }
   }
@@ -194,6 +216,13 @@ function CreateNew({ type }) {
       <div>
         <Form onSubmit={createNew} className='create'>
           <h3>Register new {type}</h3>
+          {postError.active && (
+            <p
+              style={{ color: 'red', textAlign: 'center', fontSize: '0.8rem' }}
+            >
+              {postError.message}
+            </p>
+          )}
           {(type === 'student' || type === 'teacher') && (
             <>
               <Input
@@ -296,6 +325,13 @@ function CreateNew({ type }) {
               <br />
             </>
           )}
+          {departmentFetchError.active && (
+            <p
+              style={{ color: 'red', textAlign: 'center', fontSize: '0.8rem' }}
+            >
+              {departmentFetchError.message}
+            </p>
+          )}
           {departments.length > 0 && (
             <>
               <p>Choose department:</p>
@@ -350,6 +386,13 @@ function CreateNew({ type }) {
               )}
               <br />
             </>
+          )}
+          {teacherFetchError.active && (
+            <p
+              style={{ color: 'red', textAlign: 'center', fontSize: '0.8rem' }}
+            >
+              {teacherFetchError.message}
+            </p>
           )}
           {teachers.length !== 0 && (
             <>
