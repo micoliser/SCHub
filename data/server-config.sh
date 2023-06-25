@@ -25,28 +25,30 @@ apt install -y libssl-dev libffi-dev python3-dev
 apt-get -y install pycodestyle
 rm get-pip.py
 
-apt-get install -y python3-lxml
-pip3 install email_validator
-pip3 install sqlalchemy
-pip3 install python-dotenv
-pip3 install mysql-connector-python
-pip3 install flask
-pip3 install flask-login
-pip3 install PyJWT
-pip3 install flask-cors
-pip3 install flasgger
-pip3 install pandas
-pip3 install openpyxl
-
 # Install unzip and make utility
 apt-get -y install apt-utils
 apt-get -y install unzip
 apt-get -y install build-essential
 apt-get -y install make
 apt-get -y install cmake
-# Move to ~ directory
-cd ~
 
+# Install requirements
+apt-get install -y python3-lxml
+pip3 install pep8==1.7.1
+pip3 install email_validator==2.0.0.post2
+pip3 install SQLAlchemy==2.0.9
+pip3 install python-dotenv
+pip3 install mysql-connector-python
+pip3 install Flask==2.3.2
+pip3 install Flask_Login==0.6.2
+pip3 install Flask_Cors==3.0.10
+pip3 install flasgger==0.9.7.1
+pip3 install pandas==2.0.2
+pip3 install gunicorn==20.1.0
+pip3 install PyJWT
+pip3 install openpyxl
+
+cd /
 # Download and install stderred
 wget https://github.com/sickill/stderred/archive/refs/heads/master.zip
 unzip master.zip
@@ -55,10 +57,16 @@ cd stderred-master/
 make
 export LD_PRELOAD="/stderred-master/build/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
 echo -e "export LD_PRELOAD=\"/stderred-master/build/libstderred.so\${LD_PRELOAD:+:\$LD_PRELOAD}\"" | tee -a ~/.bashrc
-cd ~
+cd /
 
 # Check Versions
 clear
+
+# Installs mysql client
+apt update
+apt upgrade
+apt install mysql-server
+systemctl start mysql.service
 
 # Configures a server to work with nginx
 
@@ -72,17 +80,16 @@ echo "SCHub" | tee /var/www/html/index.nginx-debian.html
 # Disables Password authentication for ease of login
 echo -e "    PasswordAuthentication no" | tee -a /etc/ssh/ssh_config
 
-# Routes the page '/redirect_me' to a different page (Moved permanently condition)
-sed -i "s/server_name _;/server_name _;\n\trewrite ^\/git https:\/\/github.com\/micoliser\/SCHub permanent;\n\n\tlocation = \/api/ {\n\t\tinclude proxy_params;\n\t\tproxy_pass http:0.0.0.0:5000/api/;\n\t}/" /etc/nginx/sites-available/default
+# Routes the page '/git' to the project's git repository
+sed -i "s/server_name _;/server_name localhost 0.0.0.0;\n\trewrite ^\/git https:\/\/github.com\/micoliser\/SCHub permanent;\n\n\tlocation = \/api\/ {\n\t\tinclude proxy_params;\n\t\tproxy_pass http:\/\/0.0.0.0:5000\/api\/;\n\t}/" /etc/nginx/sites-available/default
 
 # Adds the custom X-Served-By Header to the default file
-sed -i "s/^\tlocation \/ {/\tlocation \/ {\n\t\tadd_header X-Served-By \"$HOSTNAME\";/" /etc/nginx/sites-available/default
+sed -i "s/^\tlocation \/ {/\tlocation \/ {\n\t\tadd_header X-Served-By \"$HOSTNAME\";\n\t\tinclude proxy_params;\n\t\tproxy_pass http:\/\/0.0.0.0:3000\//" /etc/nginx/sites-available/default
 
 # Adds a new branch /developers (will host the developers profile)
 mkdir -p /data/developers/releases/test/ /data/developers/shared/
 echo -e "Aina Jesulayomi: https://github.com/jesulayomy\nSamuel Iwelumo: https://github.com/micoliser\n" | tee /data/developers/releases/test/index.html
 ln -sf /data/developers/releases/test/ /data/developers/current
-chown -R ubuntu:ubuntu /data/
 sed -i "s.^\tlocation / {.\tlocation /devs/ {\n\t\talias /data/developers/current/;\n\t}\n\n\tlocation / {." /etc/nginx/sites-available/default
 
 service nginx restart
