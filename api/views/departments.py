@@ -67,3 +67,23 @@ def department(department_id):
         storage.delete(department)
         storage.save()
         return make_response(jsonify({}), 200)
+
+
+@app_views.route(
+    '/departments/<department_id>/students',
+    methods=['GET', 'PUT', 'DELETE'],
+    strict_slashes=False)
+def department_students(department_id):
+    """
+        Configures GET, PUT and DELETE for the department route
+    """
+
+    department = storage.get('Department', department_id)
+    with storage.session_scope() as session:
+        department = session.merge(department)
+        list_students = []
+        for student in department.students:
+            student_dict = student.to_dict()
+            student_dict['department'] = department.name
+            list_students.append(student_dict)
+        return jsonify(list_students)

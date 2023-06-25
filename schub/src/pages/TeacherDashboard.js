@@ -3,11 +3,14 @@ import { AuthContext } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingPage from '../components/Loading';
+import '../styles/dashboard.css';
 
 function TeacherDashboard({ loading }) {
   const { isLoggedIn, user } = useContext(AuthContext);
   const [department, setDepartment] = useState(null);
   const [courses, setCourses] = useState([]);
+  const [showStudents, setShowStudents] = useState({});
+  const [students, setStudents] = useState([]);
 
   useEffect(() => {
     if (user) {
@@ -33,11 +36,35 @@ function TeacherDashboard({ loading }) {
     }
   }, [user]);
 
+  function showStudentsDetails(index, departmentId) {
+    if (showStudents[index]) {
+      setShowStudents((prevState) => ({
+        ...prevState,
+        [index]: !prevState[index],
+      }));
+      return;
+    }
+
+    setShowStudents((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+
+    axios
+      .get(`http://localhost:5000/api/departments/${departmentId}/students`)
+      .then((res) => {
+        setStudents(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return loading ? (
     <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Teacher' ? (
-      <section>
+      <section className='teacher-dashboard'>
         <h1>Welcome {user.first_name}</h1>
         <div>
           <p>
@@ -57,11 +84,27 @@ function TeacherDashboard({ loading }) {
           {courses.length !== 0 && (
             <>
               <p>Courses: </p>
-              <ul>
-                {courses.map((course) => (
-                  <li key={course.id}>{course.name}</li>
-                ))}
-              </ul>
+              {courses.map((course, i) => (
+                <div key={course.id}>
+                  <p
+                    onClick={() => {
+                      showStudentsDetails(i, course.department_id);
+                    }}
+                    className={`para ${showStudents[i] ? 'hide' : 'show'}`}
+                  >
+                    {course.name}
+                  </p>
+                  {showStudents[i] && students.length > 0 && (
+                    <div>
+                      {students.map((student) => (
+                        <p key={student.id}>
+                          {student.first_name + ' ' + student.last_name}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </>
           )}
         </div>

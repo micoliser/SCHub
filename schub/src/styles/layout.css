@@ -43,6 +43,11 @@ header .head, header .sign {
 header .head {
     font-size: xx-large;
     font-weight: bold;
+    padding: 25px;
+    background-image: url('../images/main-roof.png');
+    background-repeat: no-repeat;
+    background-size: 60%;
+    background-position-x: 6%;
 }
 
 header .sign {

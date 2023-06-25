@@ -17,3 +17,7 @@ class Department(BaseModel, Base):
     courses = relationship("Course",
                            backref="department",
                            cascade="all")
+
+    students = relationship("Student",
+                            backref="department",
+                            cascade="all")

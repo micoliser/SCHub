@@ -1,0 +1,24 @@
+.para:hover {
+    cursor: pointer;
+    position: relative;
+}
+
+.para.show:hover::after {
+    content: 'Show teacher';
+}
+
+.para.hide:hover::after {
+    content: 'Hide teacher';
+}
+
+.para:hover::after {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #f2f2f2;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    color: #333;
+}

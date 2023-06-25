@@ -57,6 +57,30 @@
     cursor: pointer;
 }
 
+.login-student {
+    background-image: url('../images/light-student.png');
+}
+
+.login-teacher {
+    background-image: url('../images/light-teacher.png');
+    background-size: 28%;
+    background-position: right 6% center;
+}
+
+.login-admin {
+    background-image: url('../images/light-admin.png');
+}
+
+.login-student,
+.login-admin {
+    background-size: 20%;
+    background-position: right 10% center;
+}
+
+.login-student, .login-teacher, .login-admin {
+    background-repeat: no-repeat;
+}
+
 /* Media queries for responsive */
 @media screen and (max-width: 900px) {
     .login-container {
@@ -66,12 +90,12 @@
 
 @media screen and (max-width: 600px) {
     .form-container {
-        width: 80%;
+        width: 90%;
     }
 }
 
 @media screen and (max-width: 450px) {
     .login-container, .form-container {
-        width: 98%;
+        width: 100%;
     }
 }

@@ -88,7 +88,11 @@ function Login() {
     <div className='form-container'>
       {startLogin ? (
         <div className='login-container'>
-          <Button name={type} onClick={handleStartLogin}>
+          <Button
+            name={type}
+            onClick={handleStartLogin}
+            className={`login-${type.toLowerCase()}`}
+          >
             {`Login as ${type}`}
           </Button>
           <Form className='login-form' onSubmit={handleLogin}>
@@ -134,15 +138,27 @@ function Login() {
         </div>
       ) : (
         <div className='login-container'>
-          <Button name='Student' onClick={handleStartLogin}>
+          <Button
+            name='Student'
+            onClick={handleStartLogin}
+            className='login-student'
+          >
             Login as Student
           </Button>
           <br />
-          <Button name='Teacher' onClick={handleStartLogin}>
+          <Button
+            name='Teacher'
+            onClick={handleStartLogin}
+            className='login-teacher'
+          >
             Login as Teacher
           </Button>
           <br />
-          <Button name='Admin' onClick={handleStartLogin}>
+          <Button
+            name='Admin'
+            onClick={handleStartLogin}
+            className='login-admin'
+          >
             Login as Admin
           </Button>
           <br />

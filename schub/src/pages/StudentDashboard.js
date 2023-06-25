@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
 import Button from '../components/Button';
 import LoadingPage from '../components/Loading';
+import '../styles/dashboard.css';
 
 function StudentDashboard({ loading }) {
   const { isLoggedIn, user } = useContext(AuthContext);
@@ -12,6 +14,7 @@ function StudentDashboard({ loading }) {
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [courses, setCourses] = useState([]);
   const [show, setShow] = useState(false);
+  const [showTeacher, setShowTeacher] = useState({});
 
   useEffect(() => {
     if (user) {
@@ -47,7 +50,14 @@ function StudentDashboard({ loading }) {
       setFilteredCourses(filteredCourses);
       setCourses(filteredCourses);
     }
-  }, [allCourses, user.current_level]);
+  }, [allCourses]);
+
+  function showTeacherDetails(index) {
+    setShowTeacher((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  }
 
   function showAll() {
     if (show) {
@@ -63,7 +73,7 @@ function StudentDashboard({ loading }) {
     <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Student' ? (
-      <section>
+      <section className='student-dashboard'>
         <h1>Welcome {user.first_name}</h1>
         <div>
           <p>
@@ -91,13 +101,19 @@ function StudentDashboard({ loading }) {
           {courses.length !== 0 && (
             <>
               <p>Courses: </p>
-              <ul>
-                {courses.map((course) => (
-                  <li key={course.id}>
+              {courses.map((course, i) => (
+                <div key={course.id}>
+                  <p
+                    onClick={() => {
+                      showTeacherDetails(i);
+                    }}
+                    className={`para ${showTeacher[i] ? 'hide' : 'show'}`}
+                  >
                     {course.name} ({course.level}00L)
-                  </li>
-                ))}
-              </ul>
+                  </p>
+                  {showTeacher[i] && <p>Teacher: {course.teacher}</p>}
+                </div>
+              ))}
               <Button name='more-courses' onClick={showAll}>
                 {show
                   ? 'Show courses for current level'

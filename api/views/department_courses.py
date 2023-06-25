@@ -20,7 +20,14 @@ def courses(department_id):
         department = storage.get('Department', department_id)
         with storage.session_scope() as session:
             department = session.merge(department)
-            list_courses = [course.to_dict() for course in department.courses]
+            list_courses = []
+            for course in department.courses:
+                course_dict = course.to_dict()
+                teacher = storage.get('Teacher', course.teacher_id)
+                course_dict['department'] = department.name
+                course_dict['teacher'] = teacher.first_name + \
+                    ' ' + teacher.last_name
+                list_courses.append(course_dict)
         return jsonify(list_courses)
     else:
         if not request.get_json():
@@ -63,7 +70,11 @@ def course(department_id, course_id):
             abort(404)
 
     if request.method == 'GET':
-        return jsonify(course.to_dict())
+        course_dict = course.to_dict()
+        teacher = storage.get('Teacher', course.teacher_id)
+        course_dict['department'] = department.name
+        course_dict['teacher'] = teacher.first_name + ' ' + teacher.last_name
+        return jsonify(course_dict)
     elif request.method == 'PUT':
         if not request.get_json():
             abort(400, description="Not a valid JSON")
