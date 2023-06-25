@@ -7,11 +7,6 @@
     margin-top: 20px;
 }
 
-.table-div {
-    width: 100%;
-    overflow: scroll;
-}
-
 table {
     position: relative;
     width: 95%;
@@ -80,6 +75,11 @@ button.more {
 
 /* Media queries for responsive */
 @media screen and (max-width: 1000px) {
+    .table-div {
+        width: 100%;
+        overflow-x: scroll;
+    }
+
     table {
         width: 100%;
     }

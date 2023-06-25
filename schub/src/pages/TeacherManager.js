@@ -72,6 +72,10 @@ function TeacherManager({ loading }) {
     setSearchingValue('');
 
     const value = e.target.value;
+    if (value === 'None') {
+      showAll();
+      return;
+    }
     setTeachers(allTeachers.filter((teacher) => teacher.department === value));
   }
 
@@ -134,6 +138,7 @@ function TeacherManager({ loading }) {
                 <div className='department'>
                   <p>By Department</p>
                   <select name='filter-departments' onChange={handleFilter}>
+                    <option>None</option>
                     {departments.map((department) => (
                       <option key={department.id}>{department.name}</option>
                     ))}

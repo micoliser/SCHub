@@ -86,6 +86,15 @@ function CourseManager({ loading }) {
     const value = e.target.value;
     if (e.target.name === 'filter-level') {
       if (filteringDepartment.active) {
+        if (value === 'None') {
+          setCourses(
+            allCourses.filter(
+              (course) => course.department === filteringDepartment.value
+            )
+          );
+          setFilteringLevel({ active: false, value: '' });
+          return;
+        }
         setCourses(
           allCourses.filter(
             (course) =>
@@ -94,6 +103,10 @@ function CourseManager({ loading }) {
           )
         );
       } else {
+        if (value === 'None') {
+          showAll();
+          return;
+        }
         setCourses(
           allCourses.filter((course) => course.level === Number(value) / 100)
         );
@@ -101,6 +114,15 @@ function CourseManager({ loading }) {
       setFilteringLevel({ active: true, value: value });
     } else {
       if (filteringLevel.active) {
+        if (value === 'None') {
+          setCourses(
+            allCourses.filter(
+              (course) => course.level === filteringLevel.value / 100
+            )
+          );
+          setFilteringDepartment({ active: false, value: '' });
+          return;
+        }
         setCourses(
           allCourses.filter(
             (course) =>
@@ -109,6 +131,10 @@ function CourseManager({ loading }) {
           )
         );
       } else {
+        if (value === 'None') {
+          showAll();
+          return;
+        }
         setCourses(allCourses.filter((course) => course.department === value));
       }
       setFilteringDepartment({ active: true, value: value });
@@ -175,6 +201,7 @@ function CourseManager({ loading }) {
                 <div className='level'>
                   <p>By Level</p>
                   <select name='filter-level' onChange={handleFilter}>
+                    <option>None</option>
                     <option>100</option>
                     <option>200</option>
                     <option>300</option>
@@ -184,6 +211,7 @@ function CourseManager({ loading }) {
                 <div className='department'>
                   <p>By Department</p>
                   <select name='filter-departments' onChange={handleFilter}>
+                    <option>None</option>
                     {departments.map((department) => (
                       <option key={department.id}>{department.name}</option>
                     ))}
