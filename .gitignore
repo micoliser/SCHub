@@ -3,6 +3,8 @@ setup_dev_db.sql
 .prettierrc
 .eslintrc
 .vscode
+access.log
+error.log
 
 
 # -------------- PYTHON DEV ---------------- #
