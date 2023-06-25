@@ -56,3 +56,22 @@
     background-color: #7F5AF0;
     cursor: pointer;
 }
+
+/* Media queries for responsive */
+@media screen and (max-width: 900px) {
+    .login-container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .form-container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .login-container, .form-container {
+        width: 98%;
+    }
+}

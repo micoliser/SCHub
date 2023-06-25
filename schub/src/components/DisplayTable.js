@@ -65,95 +65,97 @@ function DisplayTable({
       )}
     </div>
   ) : (
-    <table>
-      <thead>
-        <tr>
-          <th>
-            {type === 'student' || type === 'teacher' ? 'Full Name' : 'Name'}
-          </th>
-          {type === 'student' && <th>Matric No</th>}
-          {(type === 'student' || type === 'teacher') && <th>Email</th>}
-          {type !== 'department' && <th>Department</th>}
-          {(type === 'student' || type === 'course') && <th>Level</th>}
-          {type === 'course' && <th>Teacher</th>}
-          <th colSpan={2}>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((dt) => {
-          return (
-            <tr key={dt.id}>
-              <td>
-                {type === 'student' || type === 'teacher'
-                  ? dt.first_name + ' ' + dt.last_name
-                  : dt.name}
-              </td>
-              {type === 'student' && <td>{dt.matric_no}</td>}
-              {(type === 'student' || type === 'teacher') && (
-                <td>{dt.email}</td>
-              )}
-              {type !== 'department' && <td>{dt.department}</td>}
-              {type === 'student' && <td>{dt.current_level + '00'}</td>}
-              {type === 'course' && <td>{dt.level + '00'}</td>}
-              {type === 'course' && <td>{dt.teacher}</td>}
-              <td>
-                <Button
-                  name={dt.id}
-                  onClick={() =>
-                    handleUpdate(
-                      dt.id,
-                      type === 'student' || type === 'teacher'
-                        ? `${dt.first_name} ${dt.last_name}`
-                        : dt.name,
-                      type === 'course' && dt.department
-                    )
-                  }
-                  className='update'
-                >
-                  Update
-                </Button>
-              </td>
-              <td>
-                {type !== 'department' &&
-                  (deleting && deleteId === dt.id ? (
-                    <div className='deleting'>
-                      <p>
-                        Are you sure you want to delete
-                        {type === 'student' || type === 'teacher'
+    <div className='table-div'>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              {type === 'student' || type === 'teacher' ? 'Full Name' : 'Name'}
+            </th>
+            {type === 'student' && <th>Matric No</th>}
+            {(type === 'student' || type === 'teacher') && <th>Email</th>}
+            {type !== 'department' && <th>Department</th>}
+            {(type === 'student' || type === 'course') && <th>Level</th>}
+            {type === 'course' && <th>Teacher</th>}
+            <th colSpan={2}>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((dt) => {
+            return (
+              <tr key={dt.id}>
+                <td>
+                  {type === 'student' || type === 'teacher'
+                    ? dt.first_name + ' ' + dt.last_name
+                    : dt.name}
+                </td>
+                {type === 'student' && <td>{dt.matric_no}</td>}
+                {(type === 'student' || type === 'teacher') && (
+                  <td>{dt.email}</td>
+                )}
+                {type !== 'department' && <td>{dt.department}</td>}
+                {type === 'student' && <td>{dt.current_level + '00'}</td>}
+                {type === 'course' && <td>{dt.level + '00'}</td>}
+                {type === 'course' && <td>{dt.teacher}</td>}
+                <td>
+                  <Button
+                    name={dt.id}
+                    onClick={() =>
+                      handleUpdate(
+                        dt.id,
+                        type === 'student' || type === 'teacher'
                           ? `${dt.first_name} ${dt.last_name}`
-                          : dt.name}
-                        ?
-                      </p>
+                          : dt.name,
+                        type === 'course' && dt.department
+                      )
+                    }
+                    className='update'
+                  >
+                    Update
+                  </Button>
+                </td>
+                <td>
+                  {type !== 'department' &&
+                    (deleting && deleteId === dt.id ? (
+                      <div className='deleting'>
+                        <p>
+                          Are you sure you want to delete
+                          {type === 'student' || type === 'teacher'
+                            ? `${dt.first_name} ${dt.last_name}`
+                            : dt.name}
+                          ?
+                        </p>
+                        <Button
+                          name='back'
+                          onClick={backFromDelete}
+                          className='back'
+                        >
+                          No, Go Back
+                        </Button>
+                        <Button
+                          name='delete'
+                          onClick={doDelete}
+                          className='delete'
+                        >
+                          Yes, Delete
+                        </Button>
+                      </div>
+                    ) : (
                       <Button
-                        name='back'
-                        onClick={backFromDelete}
-                        className='back'
-                      >
-                        No, Go Back
-                      </Button>
-                      <Button
-                        name='delete'
-                        onClick={doDelete}
+                        name={dt.id}
+                        onClick={handleDelete}
                         className='delete'
                       >
-                        Yes, Delete
+                        Delete
                       </Button>
-                    </div>
-                  ) : (
-                    <Button
-                      name={dt.id}
-                      onClick={handleDelete}
-                      className='delete'
-                    >
-                      Delete
-                    </Button>
-                  ))}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                    ))}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

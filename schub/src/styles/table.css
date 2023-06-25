@@ -6,6 +6,12 @@
 .loading h4 {
     margin-top: 20px;
 }
+
+.table-div {
+    width: 100%;
+    overflow: scroll;
+}
+
 table {
     position: relative;
     width: 95%;
@@ -14,7 +20,7 @@ table {
 }
 
 th, tr, td {
-    padding: 10px;
+    padding: 5px;
 }
 
 button {
@@ -70,4 +76,11 @@ button.more {
     border-radius: 15px;
     color: #FFFFFE;
     background-color: #2CB67D;
+}
+
+/* Media queries for responsive */
+@media screen and (max-width: 1000px) {
+    table {
+        width: 100%;
+    }
 }

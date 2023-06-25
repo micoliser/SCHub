@@ -24,7 +24,7 @@ h1 {
     align-items: center;
     justify-content: center;
     height: 40px;
-    width: 50%;
+    width: 60%;
     margin: 10px auto;
 }
 
@@ -43,7 +43,6 @@ h1 {
     background-color: #16161A;
     border: 2px solid #2CB67D;
     color: #FFFFFE;
-    font-size: 1rem;
 }
 
 .search input {
@@ -94,4 +93,36 @@ h1 {
 
 .filters button:hover {
     background-color: #2CB67D;
+}
+
+/* Media queries for responsive */
+@media screen and (max-width: 1000px) {
+    .manage {
+        width: 98%;
+    }
+
+    .filters {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 351px) and (max-width: 500px) {
+    .search {
+        width: 90%;
+    }
+
+    .filters {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .search {
+        width: 100%;
+    }
+
+    .filters {
+        width: 100%;
+        flex-wrap: wrap;
+    }
 }

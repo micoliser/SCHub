@@ -27,3 +27,43 @@ form.create input[type="submit"] {
     background-color: #2CB67D;
     border: none;
 }
+
+/* Media queries for responsive */
+@media screen and (max-width: 850px) {
+    form.create {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    form.create {
+        width: 90%;
+    }
+
+    form.create input,
+    form.create select {
+        width: 70%;
+    }
+
+    form.create button,
+    form.create input[type="submit"] {
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    form.create {
+        width: 90%;
+    }
+
+    form.create input,
+    form.create select {
+        width: 90%;
+        padding: 10px;
+    }
+
+    form.create button,
+    form.create input[type="submit"] {
+        width: 40%;
+    }
+}

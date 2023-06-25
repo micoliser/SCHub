@@ -53,3 +53,42 @@ form.update input[type="submit"] {
 form.update button:hover {
     background-color: #2CB67D;
 }
+
+/* Media queries for responsive */
+@media screen and (max-width: 850px) {
+    form.update {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    form.update {
+        width: 90%;
+    }
+
+    form.update input,
+    form.update select {
+        width: 70%;
+    }
+
+    form.update button,
+    form.update input[type="submit"] {
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    form.update {
+        width: 90%;
+    }
+
+    form.update input,
+    form.update select {
+        width: 90%;
+    }
+
+    form.update button,
+    form.update input[type="submit"] {
+        width: 40%;
+    }
+}
