@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import validator from 'validator';
 import { AuthContext } from '../contexts/AuthContext';
@@ -134,6 +134,15 @@ function Login() {
               id={error ? 'disabled' : ''}
             />
             <br />
+            {type !== 'Admin' && (
+              <p>
+                Don't have a password yet? If you just registered with the admin
+                then
+                <Link to='/password-create' state={{ type: type }}>
+                  Create a password
+                </Link>
+              </p>
+            )}
           </Form>
         </div>
       ) : (

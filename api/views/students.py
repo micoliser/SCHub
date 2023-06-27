@@ -18,10 +18,15 @@ def students():
 
     if request.method == 'GET':
         level = request.args.get('level')
+        email = request.args.get('email')
         all_students = storage.all('Student').values()
         if level is None:
             list_students = []
             for student in all_students:
+                # to get the id of a particular student with email address
+                if email and student.email == email:
+                    return jsonify({'id': student.id})
+
                 student_dict = student.to_dict()
                 department = storage.get('Department', student.department_id)
                 student_dict['department'] = department.name
@@ -46,8 +51,7 @@ def students():
                     'department_id',
                     'start_level',
                     'current_level',
-                    'email',
-                    'password']
+                    'email']
         for parameter in required:
             if parameter not in request.get_json():
                 abort(400,

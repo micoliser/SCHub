@@ -3,6 +3,7 @@
 from api.auths import auth
 from flask import current_app, make_response, jsonify, request, abort
 from flask_login import current_user, login_user, logout_user, login_required
+from hashlib import md5
 from models import storage
 import jwt
 
@@ -26,7 +27,10 @@ def login():
     user = None
     for obj in all_objs.values():
         if obj.email == email:
-            if obj.password == password:
+            md5_hash = md5()
+            md5_hash.update(password.encode("utf-8"))
+            password_hash = md5_hash.hexdigest()
+            if obj.password == password_hash:
                 user = obj
                 break
             else:

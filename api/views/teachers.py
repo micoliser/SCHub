@@ -17,9 +17,13 @@ def teachers():
     """
 
     if request.method == 'GET':
+        email = request.args.get('email')
         all_teachers = storage.all('Teacher').values()
         list_teachers = []
         for teacher in all_teachers:
+            # to get the id of a particular teacher with email address
+            if email and teacher.email == email:
+                return jsonify({'id': student.id})
             teacher_dict = teacher.to_dict()
             department = storage.get('Department', teacher.department_id)
             teacher_dict['department'] = department.name
@@ -31,8 +35,7 @@ def teachers():
         required = ['first_name',
                     'last_name',
                     'department_id',
-                    'email',
-                    'password']
+                    'email']
         for parameter in required:
             if parameter not in request.get_json():
                 abort(400,

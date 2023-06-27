@@ -16,6 +16,8 @@ class Person(UserMixin):
     last_name = Column(String(45), nullable=False)
     email = Column(String(45), nullable=False, unique=True)
     password = Column(String(45), nullable=True)
+    recovery_question = Column(String(50), nullable=True)
+    recovery_answer = Column(String(50), nullable=True)
 
     def __setattr__(self, name, value):
         """ hashes the password to an md5 when set """
@@ -34,7 +36,7 @@ class Person(UserMixin):
             except Exception:
                 raise ValueError("email address is invalid")
 
-        if name == "password":
+        if name == "password" or name == "recovery_answer":
             md5_hash = md5()
             md5_hash.update(value.encode("utf-8"))
             value = md5_hash.hexdigest()

@@ -15,6 +15,7 @@ import TeacherManager from '../pages/TeacherManager';
 import CourseManager from '../pages/CourseManager';
 import DepartmentManager from '../pages/DepartmentManager';
 import CreateNew from '../pages/Create';
+import CreatePassword from '../pages/CreatePassword';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -41,6 +42,7 @@ function App() {
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
           <Route path='login' element={<Login />} />
+          <Route path='password-create' element={<CreatePassword />} />
           <Route
             path='student-dashboard'
             element={<StudentDashboard loading={isLoading} />}
