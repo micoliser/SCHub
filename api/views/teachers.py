@@ -19,15 +19,23 @@ def teachers():
     if request.method == 'GET':
         email = request.args.get('email')
         all_teachers = storage.all('Teacher').values()
+
+        if email:
+            for teacher in all_teachers:
+                # to get the id of a particular teacher with email address
+                if email and teacher.email == email:
+                    if teacher.password:
+                        password = True
+                    else:
+                        password = False
+                    teacher_dict = teacher.to_dict()
+                    teacher_dict['password'] = password
+                    return jsonify(teacher_dict)
+
+            abort(404)
+
         list_teachers = []
         for teacher in all_teachers:
-            # to get the id of a particular teacher with email address
-            if email and teacher.email == email:
-                if teacher.password:
-                    password = True
-                else:
-                    password = False
-                return jsonify({'id': teacher.id, 'password': password})
             teacher_dict = teacher.to_dict()
             department = storage.get('Department', teacher.department_id)
             teacher_dict['department'] = department.name

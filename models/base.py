@@ -42,6 +42,8 @@ class BaseModel:
 
         if "password" in self_dict:
             del self_dict["password"]
+        if "recovery_answer" in self_dict:
+            del self_dict["recovery_answer"]
         if "_sa_instance_state" in self_dict:
             del self_dict["_sa_instance_state"]
 

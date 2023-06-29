@@ -17,7 +17,17 @@ def admins():
     """
 
     if request.method == 'GET':
+        email = request.args.get('email')
         all_admins = storage.all('Admin').values()
+
+        if email:
+            for admin in all_admins:
+                # to get the id of a particular admin with email address
+                if admin.email == email:
+                    return jsonify(admin.to_dict())
+
+            abort(404)
+
         list_admins = [admin.to_dict() for admin in all_admins]
         return jsonify(list_admins)
     else:

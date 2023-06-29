@@ -37,6 +37,9 @@ class Person(UserMixin):
                 raise ValueError("email address is invalid")
 
         if name == "password" or name == "recovery_answer":
+            if name == "recovery_answer":
+                value = value.lower()
+
             md5_hash = md5()
             md5_hash.update(value.encode("utf-8"))
             value = md5_hash.hexdigest()

@@ -453,7 +453,7 @@ function CreateNew({ type }) {
           )}
           {creating ? (
             <Button className='disabled' disabled>
-              Creating password...
+              Creating {type}...
               <RotatingLines
                 strokeColor='white'
                 strokeWidth='5'

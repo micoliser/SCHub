@@ -177,6 +177,11 @@ function Login() {
                 </Link>
               </p>
             )}
+            <p>
+              <Link to='/password-recovery' state={{ type: type }}>
+                Forgot password?
+              </Link>
+            </p>
           </Form>
         </div>
       ) : (

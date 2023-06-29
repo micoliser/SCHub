@@ -105,10 +105,17 @@ function CreatePassword() {
         }
       })
       .catch((err) => {
-        setCreateError({
-          active: true,
-          message: 'An error occured. Please try again',
-        });
+        if (err.response && err.response.status === 404) {
+          setCreateError({
+            active: true,
+            message: `${type} not found`,
+          });
+        } else {
+          setCreateError({
+            active: true,
+            message: 'An error occured. Please try again',
+          });
+        }
         setCreating(false);
       });
   }

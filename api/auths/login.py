@@ -76,3 +76,30 @@ def auth_status():
         user_dict['type'] = current_user.__class__.__name__
         return jsonify({'authenticated': True, 'user': user_dict})
     return jsonify({'authenticated': False})
+
+
+@auth.route('/verify-recovery/<id>', methods=['POST'])
+def verify_recovery(id):
+    """ Checks and verifies recovery_answer for a user """
+
+    try:
+        data = request.get_json()
+    except Exception:
+        abort(401)
+
+    answer = str(data.get('answer'))
+
+    models = ['Student', 'Teacher', 'Admin']
+    for model in models:
+        user = storage.get(model, id)
+        if user:
+            answer = answer.lower()
+            md5_hash = md5()
+            md5_hash.update(answer.encode("utf-8"))
+            answer_hash = md5_hash.hexdigest()
+            if answer_hash == user.recovery_answer:
+                return jsonify({'verified': True})
+            else:
+                return jsonify({'verified': False})
+
+    abort(404)
