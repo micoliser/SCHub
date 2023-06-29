@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { RotatingLines } from 'react-loader-spinner';
 import axios from 'axios';
 import validator from 'validator';
 import Form from './Form';
@@ -6,7 +7,15 @@ import Input from './Input';
 import Button from './Button';
 import '../styles/updateform.css';
 
-function UpdateForm({ type, name, id, department, setUpdating, setUpdate }) {
+function UpdateForm({
+  type,
+  name,
+  id,
+  department,
+  setUpdating,
+  setUpdate,
+  setUpdateSucess,
+}) {
   const [fName, setFName] = useState('');
   const [lName, setLName] = useState('');
   const [cName, setCName] = useState('');
@@ -22,6 +31,8 @@ function UpdateForm({ type, name, id, department, setUpdating, setUpdate }) {
   const [lNameError, setLNameError] = useState({ active: false });
   const [emailError, setEmailError] = useState({ active: false });
   const [teacherFetchError, setTeacherFetchError] = useState({ active: false });
+
+  const [doingUpdate, setDoingUpdate] = useState(false);
 
   useEffect(() => {
     if (type === 'course') {
@@ -98,11 +109,15 @@ function UpdateForm({ type, name, id, department, setUpdating, setUpdate }) {
       }
     }
 
+    setDoingUpdate(true);
+
     axios
       .put(`http://localhost:5000/api/${type}s/${id}`, data, {
         withCredentials: true,
       })
       .then((res) => {
+        setDoingUpdate(false);
+        setUpdateSucess({ done: true, name: name });
         backFromUpdate();
       })
       .catch((err) => {
@@ -259,14 +274,27 @@ function UpdateForm({ type, name, id, department, setUpdating, setUpdate }) {
       <Button name='back' onClick={backFromUpdate}>
         Go back
       </Button>
-      <Input
-        type='submit'
-        name='Update'
-        value='Update'
-        error={{ active: false }}
-        disabled={error}
-        id={error ? 'disabled' : ''}
-      />
+      {doingUpdate ? (
+        <Button className='disabled' disabled>
+          Updating...
+          <RotatingLines
+            strokeColor='white'
+            strokeWidth='5'
+            animationDuration='0.75'
+            width='17'
+            visible={true}
+          />
+        </Button>
+      ) : (
+        <Input
+          type='submit'
+          name='Update'
+          value='Update'
+          error={{ active: false }}
+          disabled={error}
+          id={error ? 'disabled' : ''}
+        />
+      )}
     </Form>
   );
 }

@@ -32,6 +32,7 @@ function CourseManager({ loading }) {
     name: '',
     department: '',
   });
+  const [updateSucess, setUpdateSucess] = useState(false);
 
   const [searching, setSearching] = useState(false);
   const [searchingValue, setSearchingValue] = useState('');
@@ -98,7 +99,7 @@ function CourseManager({ loading }) {
         setCourses(
           allCourses.filter(
             (course) =>
-              course.level === Number(value) / 100 &&
+              course.level === value &&
               course.department === filteringDepartment.value
           )
         );
@@ -107,18 +108,14 @@ function CourseManager({ loading }) {
           showAll();
           return;
         }
-        setCourses(
-          allCourses.filter((course) => course.level === Number(value) / 100)
-        );
+        setCourses(allCourses.filter((course) => course.level === value));
       }
       setFilteringLevel({ active: true, value: value });
     } else {
       if (filteringLevel.active) {
         if (value === 'None') {
           setCourses(
-            allCourses.filter(
-              (course) => course.level === filteringLevel.value / 100
-            )
+            allCourses.filter((course) => course.level === filteringLevel.value)
           );
           setFilteringDepartment({ active: false, value: '' });
           return;
@@ -127,7 +124,7 @@ function CourseManager({ loading }) {
           allCourses.filter(
             (course) =>
               course.department === value &&
-              course.level === filteringLevel.value / 100
+              course.level === filteringLevel.value
           )
         );
       } else {
@@ -167,6 +164,7 @@ function CourseManager({ loading }) {
             department={updateCourse.department}
             setUpdating={setUpdating}
             setUpdate={setUpdateCourse}
+            setUpdateSucess={setUpdateSucess}
           />
         ) : (
           <>
@@ -225,6 +223,17 @@ function CourseManager({ loading }) {
               </div>
             </div>
             {searching && <p>Showing search results for {searchedValue}</p>}
+            {updateSucess && (
+              <p
+                style={{
+                  color: 'green',
+                  textAlign: 'center',
+                  fontSize: '1rem',
+                }}
+              >
+                Updated {updateSucess.name}.
+              </p>
+            )}
             <DisplayTable
               type='course'
               data={courses}

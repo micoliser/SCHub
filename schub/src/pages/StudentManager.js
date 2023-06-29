@@ -37,6 +37,7 @@ function StudentManager({ loading }) {
   // states for student update functionality
   const [updating, setUpdating] = useState(false);
   const [updateStudent, setUpdateStudent] = useState({ id: '', name: '' });
+  const [updateSucess, setUpdateSucess] = useState(false);
 
   // states for search error
   const [searchError, setSearchError] = useState({ active: false });
@@ -97,7 +98,7 @@ function StudentManager({ loading }) {
         setStudents(
           allStudents.filter(
             (student) =>
-              student.current_level === Number(value) / 100 &&
+              student.current_level === value &&
               student.department === filteringDepartment.value
           )
         );
@@ -107,9 +108,7 @@ function StudentManager({ loading }) {
           return;
         }
         setStudents(
-          allStudents.filter(
-            (student) => student.current_level === Number(value) / 100
-          )
+          allStudents.filter((student) => student.current_level === value)
         );
       }
       setFilteringLevel({ active: true, value: value });
@@ -118,7 +117,7 @@ function StudentManager({ loading }) {
         if (value === 'None') {
           setStudents(
             allStudents.filter(
-              (student) => student.current_level === filteringLevel.value / 100
+              (student) => student.current_level === filteringLevel.value
             )
           );
           setFilteringDepartment({ active: false, value: '' });
@@ -128,7 +127,7 @@ function StudentManager({ loading }) {
           allStudents.filter(
             (student) =>
               student.department === value &&
-              student.current_level === filteringLevel.value / 100
+              student.current_level === filteringLevel.value
           )
         );
       } else {
@@ -187,6 +186,7 @@ function StudentManager({ loading }) {
             id={updateStudent.id}
             setUpdating={setUpdating}
             setUpdate={setUpdateStudent}
+            setUpdateSucess={setUpdateSucess}
           />
         ) : (
           <>
@@ -245,6 +245,17 @@ function StudentManager({ loading }) {
               </div>
             </div>
             {searching && <p>Showing search results for {searchedValue}</p>}
+            {updateSucess && (
+              <p
+                style={{
+                  color: 'green',
+                  textAlign: 'center',
+                  fontSize: '1rem',
+                }}
+              >
+                Updated {updateSucess.name}.
+              </p>
+            )}
             <DisplayTable
               type='student'
               data={students}

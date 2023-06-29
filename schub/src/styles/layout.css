@@ -77,6 +77,10 @@ header .sign {
     background-color: #2CB67D;
 }
 
+input:focus {
+    outline: none;
+}
+
 input[type='submit']#disabled, input[type='submit']#disabled:hover {
     background-color: lightgray;
     border: none;

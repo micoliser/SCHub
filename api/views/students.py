@@ -25,7 +25,11 @@ def students():
             for student in all_students:
                 # to get the id of a particular student with email address
                 if email and student.email == email:
-                    return jsonify({'id': student.id})
+                    if student.password:
+                        password = True
+                    else:
+                        password = False
+                    return jsonify({'id': student.id, 'password': password})
 
                 student_dict = student.to_dict()
                 department = storage.get('Department', student.department_id)

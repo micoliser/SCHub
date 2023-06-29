@@ -8,7 +8,7 @@ form.create h3 {
     margin-bottom: 10px;
 }
 
-form.create input, form.create select {
+form.create input, form.create select, form.create button.disabled {
     display: inline-block;
     border-radius: 20px;
     margin: 10px auto;
@@ -19,13 +19,20 @@ form.create input, form.create select {
     color: #FFFFFE;
 }
 
-form.create input[type="submit"] {
+form.create input[type="submit"], form.create button.disabled {
     width: 20%;
     padding: 10px;
     color: #FFFFFE;
+    border: none;
+}
+
+form.create input[type="submit"] {
     cursor: pointer;
     background-color: #2CB67D;
-    border: none;
+}
+
+form.create button.disabled {
+    background-color: grey;
 }
 
 /* Media queries for responsive */

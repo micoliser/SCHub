@@ -21,6 +21,7 @@ function DepartmentManager({ loading }) {
     id: '',
     name: '',
   });
+  const [updateSucess, setUpdateSucess] = useState(false);
 
   const [searching, setSearching] = useState(false);
   const [searchingValue, setSearchingValue] = useState('');
@@ -83,6 +84,7 @@ function DepartmentManager({ loading }) {
             id={updateDepartment.id}
             setUpdating={setUpdating}
             setUpdate={setUpdateDepartment}
+            setUpdateSucess={setUpdateSucess}
           />
         ) : (
           <>
@@ -119,6 +121,17 @@ function DepartmentManager({ loading }) {
               </Button>
             </div>
             {searching && <p>Showing search results for {searchedValue}</p>}
+            {updateSucess && (
+              <p
+                style={{
+                  color: 'green',
+                  textAlign: 'center',
+                  fontSize: '1rem',
+                }}
+              >
+                Updated {updateSucess.name}.
+              </p>
+            )}
             <DisplayTable
               type='department'
               data={departments}

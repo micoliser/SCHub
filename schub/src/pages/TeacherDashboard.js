@@ -64,9 +64,11 @@ function TeacherDashboard({ loading }) {
     <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Teacher' ? (
-      <section className='teacher-dashboard'>
+      <section className='dashboard'>
         <h1>Welcome {user.first_name}</h1>
-        <div>
+        <div className='logo-teacher'></div>
+        <div className='details'>
+          <h3>Profile</h3>
           <p>
             <span>Full Name: </span>
             {user.first_name + ' ' + user.last_name}
@@ -83,19 +85,22 @@ function TeacherDashboard({ loading }) {
           )}
           {courses.length !== 0 && (
             <>
-              <p>Courses: </p>
+              <span>Courses: </span>
               {courses.map((course, i) => (
-                <div key={course.id}>
+                <div key={course.id} className='courses'>
                   <p
                     onClick={() => {
                       showStudentsDetails(i, course.department_id);
                     }}
-                    className={`para ${showStudents[i] ? 'hide' : 'show'}`}
+                    className={`para teacher ${
+                      showStudents[i] ? 'hide' : 'show'
+                    }`}
                   >
                     {course.name}
                   </p>
                   {showStudents[i] && students.length > 0 && (
                     <div>
+                      <span>Students:</span>
                       {students.map((student) => (
                         <p key={student.id}>
                           {student.first_name + ' ' + student.last_name}

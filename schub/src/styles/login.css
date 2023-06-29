@@ -35,7 +35,7 @@
     width: 70%;
 }
 
-.login-form input {
+.login-form input, .login-form button {
     width: 100%;
     border: 3px solid #7F5AF0;
     background-color: #16161A;
@@ -44,12 +44,13 @@
     padding: 5%;
 }
 
-.login-container input[type='submit'] {
-    font-weight: bold;
+.login-form button.disabled {
+    background-color: grey;
+    border: none;
 }
 
-.login-container input:focus {
-    outline: none;
+.login-container input[type='submit'], .login-container button.disabled {
+    font-weight: bold;
 }
 
 .login-container input[type='submit']:hover {

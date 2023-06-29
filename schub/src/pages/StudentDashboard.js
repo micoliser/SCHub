@@ -45,7 +45,7 @@ function StudentDashboard({ loading }) {
   useEffect(() => {
     if (allCourses.length > 0) {
       const filteredCourses = allCourses.filter(
-        (course) => course.level === user.current_level
+        (course) => course.level === user.current_level / 100
       );
       setFilteredCourses(filteredCourses);
       setCourses(filteredCourses);
@@ -73,9 +73,11 @@ function StudentDashboard({ loading }) {
     <LoadingPage />
   ) : isLoggedIn ? (
     user.type === 'Student' ? (
-      <section className='student-dashboard'>
+      <section className='dashboard'>
         <h1>Welcome {user.first_name}</h1>
-        <div>
+        <div className='logo-student'></div>
+        <div className='details'>
+          <h3>Profile</h3>
           <p>
             <span>Matric No: </span>
             {user.matric_no}
@@ -100,18 +102,22 @@ function StudentDashboard({ loading }) {
           )}
           {courses.length !== 0 && (
             <>
-              <p>Courses: </p>
+              <span>Courses: </span>
               {courses.map((course, i) => (
-                <div key={course.id}>
+                <div key={course.id} className='courses'>
                   <p
                     onClick={() => {
                       showTeacherDetails(i);
                     }}
-                    className={`para ${showTeacher[i] ? 'hide' : 'show'}`}
+                    className={`para student ${
+                      showTeacher[i] ? 'hide' : 'show'
+                    }`}
                   >
                     {course.name} ({course.level}00L)
                   </p>
-                  {showTeacher[i] && <p>Teacher: {course.teacher}</p>}
+                  {showTeacher[i] && (
+                    <p className='teacher-details'>Teacher: {course.teacher}</p>
+                  )}
                 </div>
               ))}
               <Button name='more-courses' onClick={showAll}>

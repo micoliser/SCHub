@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import { RotatingLines } from 'react-loader-spinner';
 import axios from 'axios';
 import validator from 'validator';
 import Form from '../components/Form';
 import Input from '../components/Input';
+import Button from '../components/Button';
 import { AuthContext } from '../contexts/AuthContext';
 import '../styles/create.css';
 
@@ -21,6 +23,8 @@ function CreateNew({ type }) {
   const [level, setLevel] = useState('None');
   const [matricNo, setMatricNo] = useState('');
   const [departmentId, setDepartmentId] = useState('None');
+
+  const [creating, setCreating] = useState(false);
 
   // states for handling errors
   const [error, setError] = useState(false);
@@ -40,6 +44,9 @@ function CreateNew({ type }) {
   const [teacherFetchError, setTeacherFetchError] = useState({
     active: false,
   });
+
+  // success state
+  const [createSuccess, setCreateSuccess] = useState(false);
 
   useEffect(() => {
     if (type !== 'department') {
@@ -62,6 +69,7 @@ function CreateNew({ type }) {
   function createNew(e) {
     e.preventDefault();
     setPostError({ active: false });
+    setCreateSuccess(false);
 
     const data = {};
 
@@ -160,29 +168,35 @@ function CreateNew({ type }) {
       }
     }
 
+    setCreating(true);
+
     axios
       .post(`http://localhost:5000/api/${type}s`, data, {
         withCredentials: true,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        setCreating(false);
+        setCreateSuccess(true);
+        clearForm();
+      })
       .catch((err) => {
+        setCreating(false);
         setPostError({
           active: true,
           message: 'An error occured. Please try again',
         });
       });
-
-    clearForm();
   }
 
   function clearForm() {
     setFName('');
     setLName('');
     setEmail('');
+    setName('');
     setAge('');
-    setLevel('');
+    setLevel('None');
     setMatricNo('');
-    setDepartmentId('');
+    setDepartmentId('None');
     setTeachers([]);
     setTeacherId('');
   }
@@ -221,6 +235,13 @@ function CreateNew({ type }) {
               style={{ color: 'red', textAlign: 'center', fontSize: '0.8rem' }}
             >
               {postError.message}
+            </p>
+          )}
+          {createSuccess && (
+            <p
+              style={{ color: 'green', textAlign: 'center', fontSize: '1rem' }}
+            >
+              New {type} registered successfully.
             </p>
           )}
           {(type === 'student' || type === 'teacher') && (
@@ -363,7 +384,7 @@ function CreateNew({ type }) {
           {(type === 'student' || type === 'course') && (
             <>
               <p>Level</p>
-              <select onChange={(e) => setLevel(e.target.value)}>
+              <select value={level} onChange={(e) => setLevel(e.target.value)}>
                 <option>None</option>
                 <option>100</option>
                 <option>200</option>
@@ -430,14 +451,27 @@ function CreateNew({ type }) {
               <br />
             </>
           )}
-          <Input
-            type='submit'
-            name='create'
-            value='Register'
-            error={{ active: false }}
-            disabled={error}
-            id={error ? 'disabled' : ''}
-          />
+          {creating ? (
+            <Button className='disabled' disabled>
+              Creating password...
+              <RotatingLines
+                strokeColor='white'
+                strokeWidth='5'
+                animationDuration='0.75'
+                width='17'
+                visible={true}
+              />
+            </Button>
+          ) : (
+            <Input
+              type='submit'
+              name='create'
+              value='Register'
+              error={{ active: false }}
+              disabled={error}
+              id={error ? 'disabled' : ''}
+            />
+          )}
         </Form>
       </div>
     ) : (

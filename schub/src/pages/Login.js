@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import { RotatingLines } from 'react-loader-spinner';
 import axios from 'axios';
 import validator from 'validator';
 import { AuthContext } from '../contexts/AuthContext';
@@ -11,6 +12,7 @@ import '../styles/login.css';
 function Login() {
   // states for logging in
   const [startLogin, setStartLogin] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(false);
   const [type, setType] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,6 +21,7 @@ function Login() {
   const [error, setError] = useState(false);
   const [emailError, setEmailError] = useState({ active: false });
   const [passwordError, setPasswordError] = useState({ active: false });
+  const [loginError, setLoginError] = useState({ active: false });
 
   // auth context
   const { isLoggedIn, login, user } = useContext(AuthContext);
@@ -40,6 +43,8 @@ function Login() {
       setPasswordError({ active: false });
     }
 
+    setLoggingIn(true);
+
     axios
       .post(
         'http://localhost:5000/auth/login',
@@ -48,6 +53,7 @@ function Login() {
       )
       .then((res) => {
         const data = res.data;
+        setLoggingIn(false);
         login(data.user);
       })
       .catch((err) => {
@@ -62,8 +68,12 @@ function Login() {
             message: err.response.data.message,
           });
         } else {
-          console.log('Error', err);
+          setLoginError({
+            active: true,
+            message: 'An error occured. Please try again.',
+          });
         }
+        setLoggingIn(false);
       });
   }
 
@@ -96,6 +106,17 @@ function Login() {
             {`Login as ${type}`}
           </Button>
           <Form className='login-form' onSubmit={handleLogin}>
+            {loginError.active && (
+              <p
+                style={{
+                  color: 'red',
+                  textAlign: 'center',
+                  fontSize: '0.8rem',
+                }}
+              >
+                {loginError.message}
+              </p>
+            )}
             <Input
               type='text'
               name='email'
@@ -126,13 +147,26 @@ function Login() {
               error={passwordError}
             />
             <br />
-            <Input
-              type='submit'
-              value='Login'
-              error={{ active: false }}
-              disabled={error}
-              id={error ? 'disabled' : ''}
-            />
+            {loggingIn ? (
+              <Button className='disabled' disabled>
+                Logging in...
+                <RotatingLines
+                  strokeColor='white'
+                  strokeWidth='5'
+                  animationDuration='0.75'
+                  width='17'
+                  visible={true}
+                />
+              </Button>
+            ) : (
+              <Input
+                type='submit'
+                value='Login'
+                error={{ active: false }}
+                disabled={error}
+                id={error ? 'disabled' : ''}
+              />
+            )}
             <br />
             {type !== 'Admin' && (
               <p>

@@ -94,8 +94,8 @@ function DisplayTable({
                   <td>{dt.email}</td>
                 )}
                 {type !== 'department' && <td>{dt.department}</td>}
-                {type === 'student' && <td>{dt.current_level + '00'}</td>}
-                {type === 'course' && <td>{dt.level + '00'}</td>}
+                {type === 'student' && <td>{dt.current_level}</td>}
+                {type === 'course' && <td>{dt.level}</td>}
                 {type === 'course' && <td>{dt.teacher}</td>}
                 <td>
                   <Button

@@ -50,6 +50,11 @@ form.update input[type="submit"] {
     margin-left: 10px;
 }
 
+form.update button.disabled,  form.update button.disabled:hover {
+    background-color: grey;
+    border: none;
+}
+
 form.update button:hover {
     background-color: #2CB67D;
 }

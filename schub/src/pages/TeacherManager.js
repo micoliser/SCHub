@@ -19,6 +19,7 @@ function TeacherManager({ loading }) {
 
   const [updating, setUpdating] = useState(false);
   const [updateTeacher, setUpdateTeacher] = useState({ id: '', name: '' });
+  const [updateSucess, setUpdateSucess] = useState(false);
 
   const [searching, setSearching] = useState(false);
   const [searchingValue, setSearchingValue] = useState('');
@@ -104,6 +105,7 @@ function TeacherManager({ loading }) {
             id={updateTeacher.id}
             setUpdating={setUpdating}
             setUpdate={setUpdateTeacher}
+            setUpdateSucess={setUpdateSucess}
           />
         ) : (
           <>
@@ -152,6 +154,17 @@ function TeacherManager({ loading }) {
               </div>
             </div>
             {searching && <p>Showing search results for {searchedValue}</p>}
+            {updateSucess && (
+              <p
+                style={{
+                  color: 'green',
+                  textAlign: 'center',
+                  fontSize: '1rem',
+                }}
+              >
+                Updated {updateSucess.name}.
+              </p>
+            )}
             <DisplayTable
               type='teacher'
               data={teachers}
