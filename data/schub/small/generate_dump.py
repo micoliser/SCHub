@@ -6,13 +6,22 @@
 
 import csv
 import pandas as pd
+from hashlib import md5
 
+
+def hasher(string):
+    """ hashes a string and returns teh hashed value """
+
+    md5_hash = md5()
+    md5_hash.update(string.encode('utf-8'))
+    return md5_hash.hexdigest()
 
 def csv_parse(xlsx_file_path):
     """
         Converts the file to a csv.
         returns a list of rows of the data to use by the writeTable classes
     """
+
     filename = xlsx_file_path[:-5] + ".csv"
 
     df = pd.read_excel(
@@ -26,6 +35,8 @@ def csv_parse(xlsx_file_path):
         'last_name': str,
         'email': str,
         'password': str,
+        'recovery_question': str,
+        'recovery_answer': str,
         'age': int,
         'id': str,
         'name': str,
@@ -44,6 +55,11 @@ def csv_parse(xlsx_file_path):
         dtypes[key] = dtype[key]
 
     df.astype(dtypes)
+    try:
+        df['password'] = df['password'].apply(hasher)
+        df['recovery_answer'] = df['recovery_answer'].apply(hasher)
+    except Exception:
+        pass
     df.to_csv(filename, index=False,
               quoting=csv.QUOTE_NONNUMERIC, quotechar="'")
     list_rows = []
@@ -59,7 +75,7 @@ def writeAdmin():
     """ Returns the sql statement to insert data to the admins table """
 
     prompt = "INSERT INTO `admins` (id, created_at, first_name, last_name, \
-email, password) VALUES "
+email, password, recovery_question, recovery_answer) VALUES "
     write_data = csv_parse('admins.xlsx')
 
     info = ""
@@ -100,7 +116,8 @@ def writeTeach():
     """ Returns the sql statement to insert data to the teachers table """
 
     prompt = "INSERT INTO `teachers` (department_id, id, created_at, \
-first_name, last_name, email, password) VALUES "
+first_name, last_name, email, password, recovery_question, \
+recovery_answer) VALUES "
     write_data = csv_parse('teachers.xlsx')
 
     info = ""
@@ -143,7 +160,7 @@ def writeStudent():
 
     prompt = "INSERT INTO `students` (age, start_level, current_level, \
 matric_no, department_id, id, created_at, first_name, last_name, email, \
-password) VALUES "
+password, recovery_question, recovery_answer) VALUES "
     write_data = csv_parse('students.xlsx')
 
     info = ""

@@ -14,10 +14,6 @@ echo -e "\" added by configure_vim script from github.com/jesulayomy/configs/\n"
 echo -e "filetype indent on\nfiletype plugin on\nset number\nsyntax enable\nset cindent\nset autoindent\nhighlight ColorColumn ctermbg=gray\nset colorcolumn=80" | tee -a ~/.vimrc > ~/configuration_output
 
 # Python3.10 installation
-apt-get install -y software-properties-common
-add-apt-repository -y ppa:deadsnakes/ppa
-apt-get -y update
-apt-get install -y python3.10
 wget https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py
 pip install --upgrade pip
@@ -55,18 +51,12 @@ unzip master.zip
 rm master.zip
 cd stderred-master/
 make
-export LD_PRELOAD="/stderred-master/build/libstderred.so${LD_PRELOAD:+:$LD_PRELOAD}"
-echo -e "export LD_PRELOAD=\"/stderred-master/build/libstderred.so\${LD_PRELOAD:+:\$LD_PRELOAD}\"" | tee -a ~/.bashrc
+export LD_PRELOAD="/stderred-master/build/libstderred.so"
+echo -e "export LD_PRELOAD=\"/stderred-master/build/libstderred.so\"" | tee -a ~/.bashrc
 cd /
 
 # Check Versions
 clear
-
-# Installs mysql client
-apt update
-apt upgrade
-apt install mysql-server
-systemctl start mysql.service
 
 # Configures a server to work with nginx
 
@@ -84,12 +74,6 @@ echo -e "    PasswordAuthentication no" | tee -a /etc/ssh/ssh_config
 sed -i "s/server_name _;/server_name localhost 0.0.0.0;\n\trewrite ^\/git https:\/\/github.com\/micoliser\/SCHub permanent;\n\n\tlocation = \/api\/ {\n\t\tinclude proxy_params;\n\t\tproxy_pass http:\/\/0.0.0.0:5000\/api\/;\n\t}/" /etc/nginx/sites-available/default
 
 # Adds the custom X-Served-By Header to the default file
-sed -i "s/^\tlocation \/ {/\tlocation \/ {\n\t\tadd_header X-Served-By \"$HOSTNAME\";\n\t\tinclude proxy_params;\n\t\tproxy_pass http:\/\/0.0.0.0:3000\//" /etc/nginx/sites-available/default
-
-# Adds a new branch /developers (will host the developers profile)
-mkdir -p /data/developers/releases/test/ /data/developers/shared/
-echo -e "Aina Jesulayomi: https://github.com/jesulayomy\nSamuel Iwelumo: https://github.com/micoliser\n" | tee /data/developers/releases/test/index.html
-ln -sf /data/developers/releases/test/ /data/developers/current
-sed -i "s.^\tlocation / {.\tlocation /devs/ {\n\t\talias /data/developers/current/;\n\t}\n\n\tlocation / {." /etc/nginx/sites-available/default
+sed -i "s/^\tlocation \/ {/\tlocation \/ {\n\t\tadd_header X-Served-By \"$HOSTNAME\";\n\t\tinclude proxy_params;\n\t\tproxy_pass http:\/\/0.0.0.0:3000\/;/" /etc/nginx/sites-available/default
 
 service nginx restart
