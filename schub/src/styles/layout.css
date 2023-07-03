@@ -5,9 +5,14 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     background-color:#16161A;
-    color: #FFFFFE
+    color: #FFFFFE;
+    min-height: 100%;
 }
 
 .home {
@@ -15,7 +20,7 @@ body {
 }
 
 .home h1 {
-    font-size: 4rem;
+    font-size: 3rem;
 }
 
 header {
@@ -92,5 +97,25 @@ input[type='submit']#disabled, input[type='submit']#disabled:hover {
 @media screen and (max-width: 700px) {
     body {
         font-size: 0.9rem;
+    }
+
+    header {
+        padding-left: 0;
+    }
+
+    .sign-div {
+        height: 50px;
+    }
+
+    header .sign {
+        font-size: 1rem;
+    }
+
+    .sign-div .sign {
+        padding: 0 10px;
+    }
+
+    .sign-div .dash {
+        margin-right: 10px;
     }
 }

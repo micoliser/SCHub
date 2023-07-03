@@ -84,7 +84,11 @@ function CourseManager({ loading }) {
     setSearchedValue('');
     setSearchingValue('');
 
-    const value = e.target.value;
+    let value;
+    if (e.target.name === 'filter-level' && e.target.value !== 'None')
+      value = Number(e.target.value);
+    else value = e.target.value;
+
     if (e.target.name === 'filter-level') {
       if (filteringDepartment.active) {
         if (value === 'None') {
@@ -146,6 +150,8 @@ function CourseManager({ loading }) {
   function showAll() {
     setCourses(allCourses);
     setSearching(false);
+    setFilteringLevel({ active: false, value: '' });
+    setFilteringDepartment({ active: false, value: '' });
     setSearchError({ active: false });
     setSearchedValue('');
     setSearchingValue('');

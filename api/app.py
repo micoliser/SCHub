@@ -14,22 +14,22 @@ from dotenv.main import load_dotenv
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'pretty_key121'
+app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 
 login_manager = LoginManager(app)
 
 CORS(
-        auth,
-        resources={r"/*": {"origins": "*"}},
-        supports_credentials=True)
+    auth,
+    resources={r"/*": {"origins": "*"}},
+    supports_credentials=True)
 
 app.register_blueprint(app_views)
 app.register_blueprint(auth)
 
 cors = CORS(
-        app,
-        resources={r"/*": {"origins": "*"}},
-        supports_credentials=True)
+    app,
+    resources={r"/*": {"origins": "*"}},
+    supports_credentials=True)
 
 
 @login_manager.user_loader
@@ -64,9 +64,9 @@ def not_found(err):
 
 
 app.config['SWAGGER'] = {
-        'title': 'SCHub API',
-        'uiversion': 3
-        }
+    'title': 'SCHub API',
+    'uiversion': 3
+}
 
 Swagger(app)
 
@@ -76,6 +76,6 @@ if __name__ == '__main__':
 
     load_dotenv()
     app.run(
-            host='0.0.0.0',
-            port=environ.get('DB_DEV_PORT', default='5000'),
-            threaded=True)
+        host='0.0.0.0',
+        port=environ.get('DB_DEV_PORT', default='5000'),
+        threaded=True)
