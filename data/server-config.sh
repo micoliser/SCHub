@@ -77,3 +77,7 @@ sed -i "s/server_name _;/server_name localhost 0.0.0.0;\n\trewrite ^\/git https:
 sed -i "s/^\tlocation \/ {/\tlocation \/ {\n\t\tadd_header X-Served-By \"$HOSTNAME\";\n\t\tinclude proxy_params;\n\t\tproxy_pass http:\/\/0.0.0.0:3000\/;/" /etc/nginx/sites-available/default
 
 service nginx restart
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.33.0/install.sh | bash
+export NVM_DIR="/root/.nvm"
+nvm install v18.16.1
