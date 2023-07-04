@@ -19,9 +19,15 @@ mv dump.sql ../../
 cd ../../
 
 ## Regenerate the data
-cat setup_dev_db.sql | mysql -u root -p
 pkill gunicorn
-tmux gunicorn-instance -d 'gunicorn --workers=3 --access-logfile access.log --error-logfile error.log --bind 0.0.0.0:5000 api.app:app'
+cat setup_dev_db.sql | mysql -u root -p
+tmux kill-session -t gunicorn-session
+tmux new-session -d -s gunicorn-session
+
+cd /root/SCHub/
+tmux send -t 'gunicorn-session.0 gunicorn --workers=3 --access-logfile access.log --error-logfile error.log --bind 0.0.0.0:5000 api.app:app' ENTER
+
+cd data/
 cat dump.sql | mysql -u root -p
 
 # Rebuild the app, change to production server
