@@ -45,7 +45,7 @@ function StudentDashboard({ loading }) {
   useEffect(() => {
     if (allCourses.length > 0) {
       const filteredCourses = allCourses.filter(
-        (course) => course.level === user.current_level / 100
+        (course) => course.level === user.current_level
       );
       setFilteredCourses(filteredCourses);
       setCourses(filteredCourses);
@@ -92,7 +92,7 @@ function StudentDashboard({ loading }) {
           </p>
           <p>
             <span>Level: </span>
-            {user.current_level + '00'}
+            {user.current_level}
           </p>
           {department && (
             <p>
