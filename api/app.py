@@ -67,8 +67,17 @@ def not_found(err):
 
 
 app.config['SWAGGER'] = {
+#    'swagger': '2.0',
+#    'openapi': '3.0.2',
     'title': 'SCHub API',
-    'uiversion': 3
+    'uiversion': 3,
+    'version': '1.0.0',
+    'description': 'API documentation for SCHub',
+    'specs_route': '/apidocs/',
+    'host': 'app.schub.me',
+    'termsOfService': 'None',
+    'contact': '{"Name": "Aina Jesulayomi", "email": "Jesulayomi081@gmail.com"\
+}, {"Name": "Samuel Iwelumo", "email": "micoliser@gmail.com"}'
 }
 
 Swagger(app)
