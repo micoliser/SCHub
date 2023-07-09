@@ -4,12 +4,13 @@ from models.teacher import Teacher
 from models import storage
 from api.views import app_views
 from flask import abort, jsonify, make_response, request
-# from flasgger.utils import swag_from
+from flasgger.utils import swag_from
 
 
 @app_views.route(
     '/teachers/<teacher_id>/courses',
     strict_slashes=False)
+@swag_from('documentation/teacher_courses/teacher_courses.yml')
 def teacher_courses(teacher_id):
     """
         Configures GET method for the teacher courses route

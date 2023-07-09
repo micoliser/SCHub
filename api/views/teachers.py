@@ -4,13 +4,14 @@ from models.teacher import Teacher
 from models import storage
 from api.views import app_views
 from flask import abort, jsonify, make_response, request
-# from flasgger.utils import swag_from
+from flasgger.utils import swag_from
 
 
 @app_views.route(
     '/teachers',
     methods=['GET', 'POST'],
     strict_slashes=False)
+@swag_from('documentation/teachers/teachers.yml')
 def teachers():
     """
         Configures GET and POST methods for the teachers route
@@ -65,6 +66,7 @@ def teachers():
     '/teachers/<teacher_id>',
     methods=['GET', 'PUT', 'DELETE'],
     strict_slashes=False)
+@swag_from('documentation/teachers/teacher.yml')
 def teacher(teacher_id):
     """
         Configures GET, PUT and DELETE for the teacher route

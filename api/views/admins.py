@@ -4,13 +4,14 @@ from models.admin import Admin
 from models import storage
 from api.views import app_views
 from flask import abort, jsonify, make_response, request
-# from flasgger.utils import swag_from
+from flasgger.utils import swag_from
 
 
 @app_views.route(
     '/admins',
     methods=['GET', 'POST'],
     strict_slashes=False)
+@swag_from('documentation/admins/admins.yml')
 def admins():
     """
         Configures GET and POST methods for the admins route
@@ -54,6 +55,7 @@ def admins():
     '/admins/<admin_id>',
     methods=['GET', 'PUT', 'DELETE'],
     strict_slashes=False)
+@swag_from('documentation/admins/admin.yml')
 def admin(admin_id):
     """
         Configures GET, PUT and DELETE for the admin route

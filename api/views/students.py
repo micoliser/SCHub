@@ -4,13 +4,14 @@ from models.student import Student
 from models import storage
 from api.views import app_views
 from flask import abort, jsonify, make_response, request
-# from flasgger.utils import swag_from
+from flasgger.utils import swag_from
 
 
 @app_views.route(
     '/students',
     methods=['GET', 'POST'],
     strict_slashes=False)
+@swag_from('documentation/students/students.yml')
 def students():
     """
         Configures GET and POST methods for the students route
@@ -80,6 +81,7 @@ def students():
     '/students/<student_id>',
     methods=['GET', 'PUT', 'DELETE'],
     strict_slashes=False)
+@swag_from('documentation/students/student.yml')
 def student(student_id):
     """
         Configures GET, PUT and DELETE for the student route
@@ -117,6 +119,7 @@ def student(student_id):
     '/students/<student_id>/courses',
     methods=['GET'],
     strict_slashes=False)
+@swag_from('documentation/students/student_courses.yml')
 def studentCourses(student_id):
     """
         Configures GET and POST methods for the student/<id>/courses route

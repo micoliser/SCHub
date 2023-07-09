@@ -52,11 +52,14 @@ def close_db(err):
 
 @app.errorhandler(404)
 def not_found(err):
-    """ 404 Error
+    """
+        404 Error for unused route or path
     ---
     responses:
-      404:
-        description: The path to this resource was not found, Check your input
+      200:
+        description: A successful response
+        examples:
+          application/json: Hello World
     """
 
     response = make_response(jsonify({'Error': 'Not Found'}), 404)

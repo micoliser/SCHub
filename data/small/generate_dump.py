@@ -16,6 +16,7 @@ def hasher(string):
     md5_hash.update(string.encode('utf-8'))
     return md5_hash.hexdigest()
 
+
 def csv_parse(xlsx_file_path):
     """
         Converts the file to a csv.

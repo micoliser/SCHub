@@ -4,13 +4,14 @@ from models.department import Department
 from models import storage
 from api.views import app_views
 from flask import abort, jsonify, make_response, request
-# from flasgger.utils import swag_from
+from flasgger.utils import swag_from
 
 
 @app_views.route(
     '/departments',
     methods=['GET', 'POST'],
     strict_slashes=False)
+@swag_from('documentation/departments/departments.yml')
 def departments():
     """
         Configures GET and POST methods for the departments route
@@ -39,6 +40,7 @@ def departments():
     '/departments/<department_id>',
     methods=['GET', 'PUT', 'DELETE'],
     strict_slashes=False)
+@swag_from('documentation/departments/department.yml')
 def department(department_id):
     """
         Configures GET, PUT and DELETE for the department route
@@ -73,6 +75,7 @@ def department(department_id):
     '/departments/<department_id>/students',
     methods=['GET', 'PUT', 'DELETE'],
     strict_slashes=False)
+@swag_from('documentation/departments/department_students.yml')
 def department_students(department_id):
     """
         Configures GET, PUT and DELETE for the department route
