@@ -65,11 +65,13 @@ header .sign {
 }
 
 .sign-div .sign {
+    min-height: 40px;
     height: 75%;
     padding: 0 7%;
 }
 
 .sign-div .dash {
+    min-height: 40px;
     margin-right: 20px;
     line-height: 1.9;
     border-color: #2CB67D;
@@ -112,10 +114,12 @@ input[type='submit']#disabled, input[type='submit']#disabled:hover {
     }
 
     .sign-div .sign {
+        max-height: 40px;
         padding: 0 10px;
     }
 
     .sign-div .dash {
+        max-height: 40px;
         margin-right: 10px;
     }
 }

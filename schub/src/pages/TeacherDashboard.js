@@ -99,7 +99,7 @@ function TeacherDashboard({ loading }) {
                     {course.name}
                   </p>
                   {showStudents[i] && students.length > 0 && (
-                    <div>
+                    <div class="student_list">
                       <span>Students:</span>
                       {students.map((student) => (
                         <p key={student.id}>

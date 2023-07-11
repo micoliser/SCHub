@@ -22,6 +22,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const { login } = useContext(AuthContext);
 
+  // Fetches Authentication status and logs user in
   useEffect(() => {
     axios
       .get('http://localhost:5000/auth/auth_status', { withCredentials: true })
@@ -29,6 +30,7 @@ function App() {
         setIsLoading(false);
         const data = res.data;
         if (data.authenticated) {
+          // User is Authenticated, login user
           login(data.user);
         }
       })

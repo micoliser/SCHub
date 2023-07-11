@@ -51,6 +51,10 @@ section.dashboard h3 {
     background-repeat: no-repeat;
 }
 
+.student_list {
+    padding-bottom: 10px;
+}
+
 section.dashboard span {
     font-weight: bold;
     display: inline-block;
@@ -96,7 +100,7 @@ section.dashboard span {
 .dashboard button {
     display: inline-block;
     background-color: #2CB67D;
-    margin-top: 10px;
+    margin-top: 15px;
     padding: 6px;
     color: #FFFFFE;
     cursor: pointer;

@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for considering contributing to SCHub! Before you proceed, we kindly request that you first discuss the changes you wish to make with the owners of this repository. You can reach out to us via linkedin [Jesulayomy](https://www.linkedin.com/in/jesulayomi-aina-27389524a/) [Micolise](https://www.linkedin.com/in/samuel-iwelumo-8a43a6219/), email [Jesulayomy](mailto:jesulayomi081@gmail.com) [Micoliser](mailto:micoliser@gmail.com), or any other method of communication. This initial discussion will help ensure that your contribution aligns with the project's goals and prevents any duplication of efforts.
+Thank you for considering contributing to SCHub! Before you proceed, we kindly request that you first discuss the changes you wish to make with the owners of this repository. You can reach out to us via linkedin [Jesulayomy](https://www.linkedin.com/in/jesulayomi-aina-27389524a/) / [Micolise](https://www.linkedin.com/in/samuel-iwelumo-8a43a6219/), email [Jesulayomy](mailto:jesulayoMY@gmail.com) / [Micoliser](mailto:micoliser@gmail.com), or any other method of communication. This initial discussion will help ensure that your contribution aligns with the project's goals and prevents any duplication of efforts.
 
 As a contributor to SCHub, please adhere to our code of conduct in all your interactions with the project. We strive to maintain an inclusive and respectful environment for everyone involved.
 
@@ -51,7 +51,7 @@ This Code of Conduct applies to all spaces associated with the SCHub project, bo
 
 ### Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project [team](jesulayomi081@gmail.com). All complaints will be reviewed and investigated promptly. The project team is committed to maintaining confidentiality regarding the reporter of any incident. Further details on specific enforcement policies may be posted separately.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project [team](mailto:jesulayomy@gmail.com). All complaints will be reviewed and investigated promptly. The project team is committed to maintaining confidentiality regarding the reporter of any incident. Further details on specific enforcement policies may be posted separately.
 
 Project maintainers who do not follow or enforce this Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
 
