@@ -113,7 +113,7 @@ function StudentDashboard({ loading }) {
                       showTeacher[i] ? 'hide' : 'show'
                     }`}
                   >
-                    {course.name} ({course.level}00L)
+                    {course.name} ({course.level}L)
                   </p>
                   {showTeacher[i] && (
                     <p className='teacher-details'>Teacher: {course.teacher}</p>
