@@ -119,25 +119,21 @@ function DisplayTable({
                     (deleting && deleteId === dt.id ? (
                       <div className='deleting'>
                         <p>
-                          Are you sure you want to delete
-                          {type === 'student' || type === 'teacher'
-                            ? `${dt.first_name} ${dt.last_name}`
-                            : dt.name}
-                          ?
+                          Confirm?
                         </p>
                         <Button
                           name='back'
                           onClick={backFromDelete}
                           className='back'
                         >
-                          No, Go Back
+                          No&nbsp;
                         </Button>
                         <Button
                           name='delete'
                           onClick={doDelete}
                           className='delete'
                         >
-                          Yes, Delete
+                          Yes&nbsp;
                         </Button>
                       </div>
                     ) : (
