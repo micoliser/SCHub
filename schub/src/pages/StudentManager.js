@@ -39,9 +39,6 @@ function StudentManager({ loading }) {
   const [updateStudent, setUpdateStudent] = useState({ id: '', name: '' });
   const [updateSucess, setUpdateSucess] = useState(false);
 
-  // states for search error
-  const [searchError, setSearchError] = useState({ active: false });
-
   useEffect(() => {
     // fetch all students
     axios
@@ -79,18 +76,17 @@ function StudentManager({ loading }) {
 
   function handleFilter(e) {
     setSearching(false);
-    setSearchError({ active: false });
     setSearchedValue('');
     setSearchingValue('');
 
     let value;
-    if (e.target.name === 'filter-level' && e.target.value !== 'None')
+    if (e.target.name === 'filter-level' && e.target.value !== 'By Level')
       value = Number(e.target.value);
     else value = e.target.value;
 
     if (e.target.name === 'filter-level') {
       if (filteringDepartment.active) {
-        if (value === 'None') {
+        if (value === 'By Level') {
           setStudents(
             allStudents.filter(
               (student) => student.department === filteringDepartment.value
@@ -107,7 +103,7 @@ function StudentManager({ loading }) {
           )
         );
       } else {
-        if (value === 'None') {
+        if (value === 'By Level') {
           showAll();
           return;
         }
@@ -118,7 +114,7 @@ function StudentManager({ loading }) {
       setFilteringLevel({ active: true, value: value });
     } else {
       if (filteringLevel.active) {
-        if (value === 'None') {
+        if (value === 'By Department') {
           setStudents(
             allStudents.filter(
               (student) => student.current_level === filteringLevel.value
@@ -135,7 +131,7 @@ function StudentManager({ loading }) {
           )
         );
       } else {
-        if (value === 'None') {
+        if (value === 'By Department') {
           showAll();
           return;
         }
@@ -159,7 +155,6 @@ function StudentManager({ loading }) {
       })
     );
     setSearchedValue(searchingValue);
-    setSearchingValue('');
   }
 
   function showAll() {
@@ -168,7 +163,6 @@ function StudentManager({ loading }) {
     setFilteringLevel({ active: false, value: '' });
     setFilteringDepartment({ active: false, value: '' });
     setSearching(false);
-    setSearchError({ active: false });
     setSearchedValue('');
     setSearchingValue('');
   }
@@ -204,28 +198,32 @@ function StudentManager({ loading }) {
                 value={searchingValue}
                 onChange={(e) => {
                   setSearchingValue(e.target.value);
-                  if (searchingValue.length < 3) {
-                    setSearchError({
-                      active: true,
-                      message: 'search word must be 3 characters or more',
-                    });
-                  } else {
-                    setSearchError({ active: false });
-                  }
                 }}
-                error={searchError}
+                error={{ active: false }}
               />
-              <Button name='search-students' onClick={handleSearch}>
-                Search
-              </Button>
+              {searching ? (
+                <Button
+                  style={{
+                    backgroundColor: 'red',
+                    border: 'none',
+                  }}
+                  name='show'
+                  onClick={showAll}
+                >
+                  Cancel
+                </Button>
+              ) : (
+                <Button name='search-students' onClick={handleSearch}>
+                  Search
+                </Button>
+              )}
             </div>
             <div className='filter'>
               <h3>Filter</h3>
               <div className='filters'>
                 <div className='level'>
-                  <p>By Level</p>
                   <select name='filter-level' onChange={handleFilter}>
-                    <option>None</option>
+                    <option>By Level</option>
                     <option>100</option>
                     <option>200</option>
                     <option>300</option>
@@ -233,18 +231,12 @@ function StudentManager({ loading }) {
                   </select>
                 </div>
                 <div className='department'>
-                  <p>By Department</p>
                   <select name='filter-departments' onChange={handleFilter}>
-                    <option>None</option>
+                    <option>By Department</option>
                     {departments.map((department) => (
                       <option key={department.id}>{department.name}</option>
                     ))}
                   </select>
-                </div>
-                <div className='all'>
-                  <Button name='show' onClick={showAll}>
-                    Show All
-                  </Button>
                 </div>
               </div>
             </div>

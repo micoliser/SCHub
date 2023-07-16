@@ -25,9 +25,6 @@ function TeacherManager({ loading }) {
   const [searchingValue, setSearchingValue] = useState('');
   const [searchedValue, setSearchedValue] = useState('');
 
-  // states for search error
-  const [searchError, setSearchError] = useState({ active: false });
-
   useEffect(() => {
     // fetch all teachers
     axios
@@ -52,7 +49,7 @@ function TeacherManager({ loading }) {
   }, []);
 
   function handleSearch() {
-    if (searchingValue.length < 3) {
+    if (searchingValue.length === 0) {
       return;
     }
     setSearching(true);
@@ -63,17 +60,15 @@ function TeacherManager({ loading }) {
       })
     );
     setSearchedValue(searchingValue);
-    setSearchingValue('');
   }
 
   function handleFilter(e) {
     setSearching(false);
-    setSearchError({ active: false });
     setSearchedValue('');
     setSearchingValue('');
 
     const value = e.target.value;
-    if (value === 'None') {
+    if (value === 'By Department') {
       showAll();
       return;
     }
@@ -88,7 +83,6 @@ function TeacherManager({ loading }) {
   function showAll() {
     setTeachers(allTeachers);
     setSearching(false);
-    setSearchError({ active: false });
     setSearchedValue('');
     setSearchingValue('');
   }
@@ -119,37 +113,36 @@ function TeacherManager({ loading }) {
                 value={searchingValue}
                 onChange={(e) => {
                   setSearchingValue(e.target.value);
-                  if (searchingValue.length < 3) {
-                    setSearchError({
-                      active: true,
-                      message: 'search word must be 3 characters or more',
-                    });
-                  } else {
-                    setSearchError({ active: false });
-                  }
                 }}
-                error={searchError}
+                error={{ active: false }}
               />
-              <Button name='search-teachers' onClick={handleSearch}>
-                Search
-              </Button>
+              {searching ? (
+                <Button
+                  style={{
+                    backgroundColor: 'red',
+                    border: 'none',
+                  }}
+                  name='show'
+                  onClick={showAll}
+                >
+                  Cancel
+                </Button>
+              ) : (
+                <Button name='search-teachers' onClick={handleSearch}>
+                  Search
+                </Button>
+              )}
             </div>
             <div className='filter'>
               <h3>Filter</h3>
               <div className='filters'>
                 <div className='department'>
-                  <p>By Department</p>
                   <select name='filter-departments' onChange={handleFilter}>
-                    <option>None</option>
+                    <option>By Department</option>
                     {departments.map((department) => (
                       <option key={department.id}>{department.name}</option>
                     ))}
                   </select>
-                </div>
-                <div className='all'>
-                  <Button name='show' onClick={showAll}>
-                    Show All
-                  </Button>
                 </div>
               </div>
             </div>

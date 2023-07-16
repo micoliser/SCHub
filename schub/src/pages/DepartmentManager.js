@@ -27,9 +27,6 @@ function DepartmentManager({ loading }) {
   const [searchingValue, setSearchingValue] = useState('');
   const [searchedValue, setSearchedValue] = useState('');
 
-  // states for search error
-  const [searchError, setSearchError] = useState({ active: false });
-
   useEffect(() => {
     // fetch all departments
     axios
@@ -44,7 +41,7 @@ function DepartmentManager({ loading }) {
   }, []);
 
   function handleSearch() {
-    if (searchingValue.length < 3) {
+    if (searchingValue.length === 0) {
       return;
     }
     setSearching(true);
@@ -56,7 +53,6 @@ function DepartmentManager({ loading }) {
       })
     );
     setSearchedValue(searchingValue);
-    setSearchingValue('');
   }
 
   function handleUpdate(id, name, department) {
@@ -67,7 +63,6 @@ function DepartmentManager({ loading }) {
   function showAll() {
     setDepartments(allDepartments);
     setSearching(false);
-    setSearchError({ active: false });
     setSearchedValue('');
     setSearchingValue('');
   }
@@ -100,25 +95,25 @@ function DepartmentManager({ loading }) {
                 value={searchingValue}
                 onChange={(e) => {
                   setSearchingValue(e.target.value);
-                  if (searchingValue.length < 3) {
-                    setSearchError({
-                      active: true,
-                      message: 'search word must be 3 characters or more',
-                    });
-                  } else {
-                    setSearchError({ active: false });
-                  }
                 }}
-                error={searchError}
+                error={{ active: false }}
               />
-              <Button name='search-departments' onClick={handleSearch}>
-                Search
-              </Button>
-            </div>
-            <div className='filters'>
-              <Button name='show' onClick={showAll}>
-                Show All
-              </Button>
+              {searching ? (
+                <Button
+                  style={{
+                    backgroundColor: 'red',
+                    border: 'none',
+                  }}
+                  name='show'
+                  onClick={showAll}
+                >
+                  Cancel
+                </Button>
+              ) : (
+                <Button name='search-departments' onClick={handleSearch}>
+                  Search
+                </Button>
+              )}
             </div>
             {searching && <p>Showing search results for {searchedValue}</p>}
             {updateSucess && (

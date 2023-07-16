@@ -1,0 +1,7 @@
+'id','created_at','first_name','last_name','email','password','recovery_question','recovery_answer'
+'53af4926-52ee-41d0-9acc-ae7230000001','2020-03-25 02:17:06','Aina','Jesulayomi','jesulayomi@schub.com','45c05850432ab0736aa54365010372a4','What is your baby''s name','8675f8c0f2e88280529d79da0cc5fc8e'
+'53af4926-52ee-41d0-9acc-ae7230000002','2020-03-25 02:17:06','Iwelumo','Samuel','samuel@schub.com','ad14fc1b8075ae4f2a73271df957fa70','What is your baby''s name','940f1c3f25df8c92b6ad7d47236057d5'
+'53af4926-52ee-41d0-9acc-ae7230000003','2023-03-25 02:17:07','Beta-Tester','Bot','tester@schub.com','d5ae28a97aba007a4018a7fbf9486d05','Hello there?','a7407b6278491cf787cfa5201ee635fc'
+'53af4926-52ee-41d0-9acc-ae7230000004','2023-03-25 02:17:08','Alfred','Tuva','alfred@schub.com','1f2ae098dd06d29d96b82cac55bcc1d3','Hello there?','a7407b6278491cf787cfa5201ee635fc'
+'53af4926-52ee-41d0-9acc-ae7230000005','2023-03-25 02:17:09','Martins','Ndifon','martins@schub.com','570724ff557f4cc1963c90597efb40bf','Hello there?','a7407b6278491cf787cfa5201ee635fc'
+'53af4926-52ee-41d0-9acc-ae7230000006','2023-03-25 02:17:10','Julien','Barbier','julien@schub.com','87556ee849dc60da35d2bd6eabe11662','Hello there?','a7407b6278491cf787cfa5201ee635fc'

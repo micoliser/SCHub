@@ -72,12 +72,11 @@ h1 {
 }
 
 .filters {
-    width: 40%;
+    width: 23%;
     margin: auto;
     display: flex;
     justify-content: space-evenly;
     align-items: flex-end;
-    padding-top: 10px;
     padding-bottom: 15px;
     border-radius: 30px;
 }
