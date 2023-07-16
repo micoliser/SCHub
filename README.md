@@ -6,7 +6,7 @@
 
 ### Introduction
 
-SCHub is a webservice that transforms the manner in which institutions, like universities and colleges, handle data storage for students, teachers, departments and courses in a secure and user-friendly setting. It incorporates technologies like MySQL, Python, ReactJS, Nginx and Haproxy to create a robust tech infrastructure for data access and management.
+SCHub is a webservice that transforms the manner in which institutions, like universities and colleges, handle data storage for students, teachers, departments and courses in a secure and user-friendly setting. It incorporates technologies like MySQL, Python, ReactJS, Nginx and Haproxy to create a robust tech infrastructure for data access and management.  
 Home: [SCHub](https://www.schub.me/explore)  
 Article: [Blog post](https://www.schub.me/blog)  
 Devs: [Aina Jesulayomi](https://www.linkedin.com/in/jesulayomi-aina-27389524a/) / [Micoliser](https://www.linkedin.com/in/samuel-iwelumo-8a43a6219/)  
