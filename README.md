@@ -90,16 +90,17 @@ PUT
 
 ### Web page
 
+![architecture](./schub/src/images/architecture.gif)
+
 #### Admins
 
 ![Admin Dashboard](./landing_page/images/admin_dashboard.PNG)
-![Manage Students](./landing_page/images/admin_dashboard.PNG)
-![Update](./landing_page/images/update.PNG)
-![Delete](./landing_page/images/delete.PNG)
+![Manage Students](./schub/src/images/student.PNG)
+![Update](./schub/src/images/update.PNG)
 
 #### Students
 
-![Student Dashboard](./landing_page/images/student_dashboard.PNG)
+![Student Dashboard](./schub/src/images/student_dash.PNG)
 
 #### Teachers
 
