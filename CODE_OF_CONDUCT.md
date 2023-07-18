@@ -1,5 +1,4 @@
-![SCHub](./landing_page/images
-/SCHub-removebg-preview.png)
+![SCHub](./landing_page/images/SCHub-removebg-preview.png)
 
 # Contributor Covenant Code of Conduct
 
