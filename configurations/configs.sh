@@ -10,24 +10,26 @@ git clone https://$GIT_TOKEN@github.com/micoliser/SCHub.git
 cp .env SCHub/
 
 # Generate a new datadump and cleanup unnecessary csv files
-cd SCHub/data/small/
+cd SCHub/data/
 python3 generate_dump.py
 rm *.csv
-mv dump.sql ../
-
 echo -e "\n\nKill gunicorn and create new data\n\n"
-cd /root/SCHub/data/
+
 ## Regenerate the data
 pkill gunicorn
 echo -e "\n\nMySQL: Enter root password\n\n"
 cat setup_dev_db.sql | mysql -u root -p
 
+# New gunicorn session
 echo "Create a new tmux session and rerun api"
 cd /root/SCHub/
 tmux kill-session -t gunicorn-session
+sleep 5
+
 tmux new-session -d -s gunicorn-session
 tmux send -t gunicorn-session.0 'gunicorn --workers=3 --access-logfile access.log --error-logfile error.log --bind 0.0.0.0:5000 api.app:app' ENTER
 
+sleep 5
 cd data/
 echo -e "\n\nMySQL: Enter root password\n\n"
 cat dump.sql | mysql -u root -p
@@ -38,12 +40,14 @@ echo -e "\n\nRun npm build version\n\n"
 cd /root/SCHub/schub/
 npm install
 npm run build
+
 cd build/static/js/
 sed -i 's|http\://localhost\:5000|https\://www.schub.me|g' main.*js
 cd /root/SCHub/schub/
 cp -R build/* /var/www/html/schub/
 service nginx restart
+
 # Redeploy app on webserver
-ssh root@147.182.233.55 'rm -rf /var/www/html/schub/*'
-scp -r -i /root/.ssh/id_rsa /root/SCHub/schub/build/* root@147.182.233.55:/var/www/html/schub/
-ssh root@147.182.233.55 'service nginx restart'
+# ssh root@web.schub.me 'rm -rf /var/www/html/schub/*'
+# scp -r -i /root/.ssh/id_rsa /root/SCHub/schub/build/* root@web.schub.me:/var/www/html/schub/
+# ssh root@web.schub.me 'service nginx restart'

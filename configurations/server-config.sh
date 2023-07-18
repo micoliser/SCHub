@@ -64,18 +64,10 @@ apt-get -y update
 apt-get -y upgrade
 apt-get -y install nginx
 
-# Adds the Default and 404 pages to the html folder with proper content
-echo "SCHub" | tee /var/www/html/index.nginx-debian.html
-
 # Disables Password authentication for ease of login
 echo -e "    PasswordAuthentication no" | tee -a /etc/ssh/ssh_config
 
-# Routes the page '/git' to the project's git repository
-sed -i "s/server_name _;/server_name localhost 0.0.0.0;\n\trewrite ^\/git https:\/\/github.com\/micoliser\/SCHub permanent;\n\n\tlocation = \/api\/ {\n\t\tinclude proxy_params;\n\t\tproxy_pass http:\/\/0.0.0.0:5000\/api\/;\n\t}/" /etc/nginx/sites-available/default
-
 # Adds the custom X-Served-By Header to the default file
-sed -i "s/^\tlocation \/ {/\tlocation \/ {\n\t\tadd_header X-Served-By \"$HOSTNAME\";\n\t\tinclude proxy_params;\n\t\tproxy_pass http:\/\/0.0.0.0:3000\/;/" /etc/nginx/sites-available/default
-
 service nginx restart
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.33.0/install.sh | bash
