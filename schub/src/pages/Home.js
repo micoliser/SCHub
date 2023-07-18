@@ -42,7 +42,7 @@ function Home() {
           interface or API.
         </p>
         <div className='buttons'>
-          <a href='https://www.schub.me/api/apidocs' className='button'>
+          <a href='https://www.schub.me/apidocs' className='button'>
             Documentation
           </a>
           <a href='https://github.com/micoliser/SCHub' className='button'>
@@ -114,6 +114,14 @@ function Home() {
           <div className='ann-right'>
             <div className='timeline'>
               <h3>Timeline</h3>
+              <div className='time_row'>
+                <div className='date'>
+                  <p>18</p>
+                </div>
+                <div className='event'>
+                  <p>Shutting down web server and loadbalancer, app server still active</p>
+                </div>
+              </div>
               <div className='time_row'>
                 <div className='date'>
                   <p>15</p>
